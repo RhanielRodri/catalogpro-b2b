@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id               Int         @id @default(autoincrement())
+  name             String
+  sku              String      @unique
+  shortDescription String
+  fullDescription  String
+  image            String
+  specifications   String
+  unit             String
+  availability     String
+  categoryId       Int
+  brandId          Int
+  category         Category    @relation(fields: [categoryId], references: [id])
+  brand            Brand       @relation(fields: [brandId], references: [id])
+  quoteItems       QuoteItem[]
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model QuoteRequest {
+  id          Int         @id @default(autoincrement())
+  name        String
+  company     String
+  phone       String
+  email       String
+  notes       String?
+  status      String      @default("pending")
+  items       QuoteItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model QuoteItem {
+  id             Int          @id @default(autoincrement())
+  quantity       Int
+  productId      Int
+  quoteRequestId Int
+  product        Product      @relation(fields: [productId], references: [id])
+  quoteRequest   QuoteRequest @relation(fields: [quoteRequestId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
