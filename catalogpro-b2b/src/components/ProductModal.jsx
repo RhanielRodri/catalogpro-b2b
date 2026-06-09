@@ -16,6 +16,11 @@ function ProductModal({ product, onClose, onAddToQuote }) {
     return null;
   }
 
+  function handleAddToQuote() {
+    onAddToQuote(product);
+    onClose();
+  }
+
   return (
     <div className="modalOverlay" role="presentation" onMouseDown={onClose}>
       <section
@@ -59,7 +64,7 @@ function ProductModal({ product, onClose, onAddToQuote }) {
               ))}
             </ul>
           </div>
-          <button className="primaryButton" type="button" onClick={() => onAddToQuote(product)}>
+          <button className="primaryButton" type="button" onClick={handleAddToQuote}>
             Adicionar à cotação
           </button>
         </div>
