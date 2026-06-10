@@ -9,7 +9,7 @@ import quotesRoutes from "./routes/quotes.routes.js";
 const app = express();
 const port = process.env.PORT || 3333;
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }));
 app.use(express.json());
 
 app.get("/api/health", (request, response) => {

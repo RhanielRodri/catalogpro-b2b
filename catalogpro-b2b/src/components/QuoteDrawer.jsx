@@ -7,7 +7,11 @@ function QuoteDrawer({
   onClose,
   onIncrease,
   onDecrease,
-  onRemove
+  onRemove,
+  onSubmitQuote,
+  isSubmittingQuote,
+  quoteSuccessMessage,
+  quoteErrorMessage
 }) {
   return (
     <>
@@ -53,7 +57,13 @@ function QuoteDrawer({
           )}
         </div>
 
-        <QuoteForm quoteItems={quoteItems} />
+        <QuoteForm
+          quoteItems={quoteItems}
+          onSubmitQuote={onSubmitQuote}
+          isSubmittingQuote={isSubmittingQuote}
+          quoteSuccessMessage={quoteSuccessMessage}
+          quoteErrorMessage={quoteErrorMessage}
+        />
       </aside>
     </>
   );

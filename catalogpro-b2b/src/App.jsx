@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import ProductCard from "./components/ProductCard";
@@ -8,6 +8,23 @@ import QuoteDrawer from "./components/QuoteDrawer";
 import EmptyState from "./components/EmptyState";
 import Footer from "./components/Footer";
 import { products } from "./data/products";
+import { createQuote, getBrands, getCategories, getProducts } from "./services/api";
+
+function adaptProduct(apiProduct) {
+  return {
+    id: apiProduct.id,
+    nome: apiProduct.name,
+    categoria: apiProduct.category?.name || apiProduct.categoria,
+    marca: apiProduct.brand?.name || apiProduct.marca,
+    sku: apiProduct.sku,
+    descricaoCurta: apiProduct.shortDescription || apiProduct.descricaoCurta,
+    descricaoCompleta: apiProduct.fullDescription || apiProduct.descricaoCompleta,
+    imagem: apiProduct.image || apiProduct.imagem,
+    unidade: apiProduct.unit || apiProduct.unidade,
+    disponibilidade: apiProduct.availability || apiProduct.disponibilidade,
+    especificacoes: apiProduct.specifications || apiProduct.especificacoes || []
+  };
+}
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,33 +33,59 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quoteItems, setQuoteItems] = useState([]);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [catalogProducts, setCatalogProducts] = useState(products);
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [productsError, setProductsError] = useState("");
+  const [isSubmittingQuote, setIsSubmittingQuote] = useState(false);
+  const [quoteSuccessMessage, setQuoteSuccessMessage] = useState("");
+  const [quoteErrorMessage, setQuoteErrorMessage] = useState("");
 
-  const categories = useMemo(
-    () => [...new Set(products.map((product) => product.categoria))],
-    []
-  );
+  useEffect(() => {
+    async function loadCatalogData() {
+      setIsLoadingProducts(true);
+      setProductsError("");
 
-  const brands = useMemo(
-    () => [...new Set(products.map((product) => product.marca))],
-    []
-  );
+      try {
+        const [apiProducts, apiCategories, apiBrands] = await Promise.all([
+          getProducts(),
+          getCategories(),
+          getBrands()
+        ]);
+
+        setCatalogProducts(apiProducts.map(adaptProduct));
+        setCategories(apiCategories.map((category) => category.name));
+        setBrands(apiBrands.map((brand) => brand.name));
+      } catch (error) {
+        setCatalogProducts(products);
+        setCategories([...new Set(products.map((product) => product.categoria))]);
+        setBrands([...new Set(products.map((product) => product.marca))]);
+        setProductsError("Não foi possível conectar à API. Exibindo dados demonstrativos.");
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    }
+
+    loadCatalogData();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return products.filter((product) => {
+    return catalogProducts.filter((product) => {
       const matchesSearch = [
         product.nome,
         product.categoria,
         product.marca,
         product.sku
-      ].some((value) => value.toLowerCase().includes(normalizedSearch));
+      ].some((value) => String(value || "").toLowerCase().includes(normalizedSearch));
       const matchesCategory = selectedCategory ? product.categoria === selectedCategory : true;
       const matchesBrand = selectedBrand ? product.marca === selectedBrand : true;
 
       return matchesSearch && matchesCategory && matchesBrand;
     });
-  }, [searchTerm, selectedCategory, selectedBrand]);
+  }, [catalogProducts, searchTerm, selectedCategory, selectedBrand]);
 
   const totalItems = useMemo(
     () => quoteItems.reduce((total, item) => total + item.quantity, 0),
@@ -50,6 +93,8 @@ function App() {
   );
 
   function addToQuote(product) {
+    setQuoteSuccessMessage("");
+    setQuoteErrorMessage("");
     setQuoteItems((current) => {
       const existingItem = current.find((item) => item.id === product.id);
 
@@ -86,6 +131,37 @@ function App() {
     setQuoteItems((current) => current.filter((item) => item.id !== productId));
   }
 
+  async function submitQuote(formData) {
+    setIsSubmittingQuote(true);
+    setQuoteSuccessMessage("");
+    setQuoteErrorMessage("");
+
+    const payload = {
+      name: formData.nome,
+      company: formData.empresa,
+      phone: formData.telefone,
+      email: formData.email,
+      notes: formData.observacao,
+      observation: formData.observacao,
+      items: quoteItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity
+      }))
+    };
+
+    try {
+      await createQuote(payload);
+      setQuoteSuccessMessage("Solicitação de orçamento registrada com sucesso.");
+      setQuoteItems([]);
+      return true;
+    } catch (error) {
+      setQuoteErrorMessage(error.message || "Não foi possível registrar a cotação na API.");
+      return false;
+    } finally {
+      setIsSubmittingQuote(false);
+    }
+  }
+
   function clearFilters() {
     setSearchTerm("");
     setSelectedCategory("");
@@ -119,8 +195,14 @@ function App() {
               <span className="eyebrow">Catálogo público</span>
               <h2>Produtos para operação corporativa</h2>
             </div>
-            <p>{filteredProducts.length} produtos encontrados</p>
+            <p>{isLoadingProducts ? "Carregando produtos..." : `${filteredProducts.length} produtos encontrados`}</p>
           </div>
+
+          {productsError && (
+            <div className="catalogNotice" role="status">
+              {productsError}
+            </div>
+          )}
 
           <Filters
             searchTerm={searchTerm}
@@ -134,7 +216,9 @@ function App() {
             onClear={clearFilters}
           />
 
-          {filteredProducts.length > 0 ? (
+          {isLoadingProducts ? (
+            <div className="loadingState">Carregando catálogo...</div>
+          ) : filteredProducts.length > 0 ? (
             <div className="productGrid">
               {filteredProducts.map((product) => (
                 <ProductCard
@@ -167,6 +251,10 @@ function App() {
         onIncrease={increaseQuantity}
         onDecrease={decreaseQuantity}
         onRemove={removeItem}
+        onSubmitQuote={submitQuote}
+        isSubmittingQuote={isSubmittingQuote}
+        quoteSuccessMessage={quoteSuccessMessage}
+        quoteErrorMessage={quoteErrorMessage}
       />
     </>
   );

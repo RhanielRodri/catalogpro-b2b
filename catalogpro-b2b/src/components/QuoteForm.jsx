@@ -9,7 +9,13 @@ const initialFormData = {
   observacao: ""
 };
 
-function QuoteForm({ quoteItems }) {
+function QuoteForm({
+  quoteItems,
+  onSubmitQuote,
+  isSubmittingQuote,
+  quoteSuccessMessage,
+  quoteErrorMessage
+}) {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
 
@@ -35,19 +41,28 @@ function QuoteForm({ quoteItems }) {
     return Object.keys(nextErrors).length === 0;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (!validate()) {
       return;
     }
 
-    window.open(buildWhatsAppUrl(formData, quoteItems), "_blank", "noopener,noreferrer");
+    const whatsappUrl = buildWhatsAppUrl(formData, quoteItems);
+    const wasSaved = await onSubmitQuote(formData);
+
+    if (wasSaved) {
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      setFormData(initialFormData);
+      setErrors({});
+    }
   }
 
   return (
     <form className="quoteForm" onSubmit={handleSubmit} noValidate>
       <h3>Dados para orçamento</h3>
+      {quoteSuccessMessage && <p className="formSuccess">{quoteSuccessMessage}</p>}
+      {quoteErrorMessage && <p className="formError">{quoteErrorMessage}</p>}
       {errors.items && <p className="formError">{errors.items}</p>}
 
       <label>
@@ -79,8 +94,8 @@ function QuoteForm({ quoteItems }) {
         <textarea name="observacao" rows="4" value={formData.observacao} onChange={handleChange} />
       </label>
 
-      <button className="primaryButton fullWidth" type="submit">
-        Enviar pelo WhatsApp
+      <button className="primaryButton fullWidth" type="submit" disabled={isSubmittingQuote}>
+        {isSubmittingQuote ? "Registrando cotação..." : "Salvar cotação e abrir WhatsApp"}
       </button>
     </form>
   );
