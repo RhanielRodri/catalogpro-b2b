@@ -51,7 +51,6 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
   await prisma.brand.deleteMany();
-  await prisma.$executeRawUnsafe("DELETE FROM sqlite_sequence");
 
   const categoryMap = new Map();
   const brandMap = new Map();

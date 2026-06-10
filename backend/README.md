@@ -1,24 +1,61 @@
 # CatalogPro B2B API
 
-Backend inicial da Fase 2 do CatalogPro B2B.
+Backend do CatalogPro B2B preparado para produção com PostgreSQL.
 
 ## Stack
 
 - Node.js
 - Express
 - Prisma
-- SQLite
+- PostgreSQL
 - JavaScript
 - CORS
 - dotenv
 
-## Como rodar
+## Variáveis de ambiente
+
+Crie um arquivo `.env` local ou configure as variáveis na plataforma de deploy:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
+PORT=3333
+FRONTEND_URL="https://catalogpro-b2b.vercel.app"
+```
+
+## Como rodar localmente com PostgreSQL
+
+1. Crie um banco PostgreSQL local ou em uma plataforma como Render/Railway.
+2. Configure `DATABASE_URL` apontando para esse banco.
+3. Instale dependências e aplique migrations:
 
 ```bash
 npm install
 npx prisma migrate deploy
 npm run prisma:seed
 npm run dev
+```
+
+## Como rodar em produção
+
+Na plataforma de deploy, configure:
+
+```text
+Build Command: npm install && npx prisma migrate deploy
+Start Command: npm start
+```
+
+Variáveis obrigatórias:
+
+```text
+DATABASE_URL
+FRONTEND_URL
+PORT
+```
+
+Após o primeiro deploy, rode o seed uma vez no shell/job da plataforma:
+
+```bash
+npm run prisma:seed
 ```
 
 ## Endpoints

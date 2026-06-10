@@ -7,9 +7,14 @@ import productsRoutes from "./routes/products.routes.js";
 import quotesRoutes from "./routes/quotes.routes.js";
 
 const app = express();
-const port = process.env.PORT || 3333;
+const PORT = process.env.PORT || 3333;
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
-app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }));
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.get("/api/health", (request, response) => {
@@ -33,6 +38,6 @@ app.use((error, request, response, next) => {
   return response.status(500).json({ message: "Erro interno do servidor." });
 });
 
-app.listen(port, () => {
-  console.log(`CatalogPro B2B API running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`CatalogPro B2B API running on port ${PORT}`);
 });
