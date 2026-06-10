@@ -16,7 +16,7 @@ Backend inicial da Fase 2 do CatalogPro B2B.
 
 ```bash
 npm install
-npx prisma migrate dev --name init
+npx prisma migrate deploy
 npm run prisma:seed
 npm run dev
 ```
@@ -33,6 +33,15 @@ POST /api/quotes
 GET /api/quotes
 GET /api/quotes/:id
 PATCH /api/quotes/:id/status
+```
+
+## Status permitidos
+
+```text
+NEW
+IN_REVIEW
+ANSWERED
+CLOSED
 ```
 
 ## Exemplo de cotação

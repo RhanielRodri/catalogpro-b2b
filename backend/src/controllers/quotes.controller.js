@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma.js";
 
-const allowedStatuses = ["pending", "contacted", "approved", "rejected"];
+const allowedStatuses = ["NEW", "IN_REVIEW", "ANSWERED", "CLOSED"];
 
 function includeQuoteRelations() {
   return {
@@ -67,6 +67,7 @@ export async function createQuote(request, response) {
       phone: request.body.phone.trim(),
       email: request.body.email.trim(),
       notes: request.body.notes?.trim() || null,
+      status: "NEW",
       items: {
         create: request.body.items.map((item) => ({
           productId: Number(item.productId),
@@ -114,7 +115,7 @@ export async function getQuoteById(request, response) {
 
 export async function updateQuoteStatus(request, response) {
   const quoteId = Number(request.params.id);
-  const { status } = request.body;
+  const status = typeof request.body.status === "string" ? request.body.status.trim() : "";
 
   if (!Number.isInteger(quoteId)) {
     return response.status(400).json({ message: "ID de cotação inválido." });
