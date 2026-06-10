@@ -803,6 +803,21 @@ dd {
   background: var(--color-navy);
 }
 
+.quoteFeedback {
+  position: fixed;
+  right: clamp(18px, 4vw, 40px);
+  bottom: 24px;
+  z-index: 60;
+  max-width: min(360px, calc(100vw - 36px));
+  border: 1px solid rgba(22, 163, 74, 0.24);
+  border-radius: var(--radius);
+  padding: 13px 16px;
+  color: #14532d;
+  background: #ecfdf5;
+  box-shadow: var(--shadow-md);
+  font-weight: 900;
+}
+
 @media (max-width: 1180px) {
   .productGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -904,5 +919,10 @@ dd {
 
   .modalContent h2 {
     font-size: 1.55rem;
+  }
+
+  .quoteFeedback {
+    right: 18px;
+    bottom: 18px;
   }
 }

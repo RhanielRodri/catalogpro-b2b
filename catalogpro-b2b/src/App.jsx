@@ -42,6 +42,19 @@ function PublicCatalogApp() {
   const [isSubmittingQuote, setIsSubmittingQuote] = useState(false);
   const [quoteSuccessMessage, setQuoteSuccessMessage] = useState("");
   const [quoteErrorMessage, setQuoteErrorMessage] = useState("");
+  const [quoteFeedbackMessage, setQuoteFeedbackMessage] = useState("");
+
+  useEffect(() => {
+    if (!quoteFeedbackMessage) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setQuoteFeedbackMessage("");
+    }, 2600);
+
+    return () => window.clearTimeout(timer);
+  }, [quoteFeedbackMessage]);
 
   useEffect(() => {
     async function loadCatalogData() {
@@ -100,14 +113,15 @@ function PublicCatalogApp() {
       const existingItem = current.find((item) => item.id === product.id);
 
       if (existingItem) {
+        setQuoteFeedbackMessage("Quantidade atualizada na cotação.");
         return current.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
 
+      setQuoteFeedbackMessage("Produto adicionado à cotação.");
       return [...current, { ...product, quantity: 1 }];
     });
-    setIsQuoteOpen(true);
   }
 
   function increaseQuantity(productId) {
@@ -237,6 +251,12 @@ function PublicCatalogApp() {
       </main>
 
       <Footer />
+
+      {quoteFeedbackMessage && (
+        <div className="quoteFeedback" role="status" aria-live="polite">
+          {quoteFeedbackMessage}
+        </div>
+      )}
 
       <ProductModal
         product={selectedProduct}
