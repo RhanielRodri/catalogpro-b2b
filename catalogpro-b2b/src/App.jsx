@@ -183,11 +183,16 @@ function PublicCatalogApp() {
     setSelectedBrand("");
   }
 
+  function openQuoteDrawer() {
+    setQuoteFeedbackMessage("");
+    setIsQuoteOpen(true);
+  }
+
   return (
     <>
-      <Header quoteCount={totalItems} onOpenQuote={() => setIsQuoteOpen(true)} />
+      <Header quoteCount={totalItems} onOpenQuote={openQuoteDrawer} />
       <main>
-        <Hero onOpenQuote={() => setIsQuoteOpen(true)} />
+        <Hero onOpenQuote={openQuoteDrawer} />
 
         <section className="benefits" id="beneficios">
           <div>

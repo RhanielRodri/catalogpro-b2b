@@ -1006,7 +1006,11 @@ dd {
   }
 
   .quoteItemActions {
-    justify-items: stretch;
+    justify-items: center;
+  }
+
+  .quantityControls {
+    width: 122px;
   }
 
   .removeButton {

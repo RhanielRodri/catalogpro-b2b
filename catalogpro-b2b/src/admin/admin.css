@@ -208,7 +208,7 @@
 
 .admin-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(360px, 0.82fr);
+  grid-template-columns: minmax(0, 1.8fr) minmax(340px, 0.72fr);
   gap: 22px;
   padding: 10px clamp(18px, 5vw, 64px) 52px;
 }
@@ -233,12 +233,12 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 940px;
+  min-width: 860px;
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 15px 16px;
+  padding: 14px 13px;
   border-bottom: 1px solid #edf2f7;
   text-align: left;
   vertical-align: middle;
@@ -325,6 +325,10 @@
   border: 1px solid #edf2f7;
   border-radius: var(--admin-radius-sm);
   background: #f8fafc;
+}
+
+.admin-details .admin-definitionGrid div:nth-child(4) {
+  grid-column: 1 / -1;
 }
 
 .admin-definitionGrid dt,
