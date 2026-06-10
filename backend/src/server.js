@@ -17,7 +17,7 @@ const allowedOrigins = [
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
-app.get("/api/health", (request, response) => {
+app.get("/api/health", (_request, response) => {
   return response.json({
     status: "ok",
     service: "CatalogPro B2B API"
@@ -29,11 +29,11 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/brands", brandsRoutes);
 app.use("/api/quotes", quotesRoutes);
 
-app.use((request, response) => {
+app.use((_request, response) => {
   return response.status(404).json({ message: "Rota não encontrada." });
 });
 
-app.use((error, request, response, next) => {
+app.use((error, _request, response, _next) => {
   console.error(error);
   return response.status(500).json({ message: "Erro interno do servidor." });
 });

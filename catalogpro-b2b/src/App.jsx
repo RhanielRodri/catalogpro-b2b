@@ -157,7 +157,6 @@ function PublicCatalogApp() {
       phone: formData.telefone,
       email: formData.email,
       notes: formData.observacao,
-      observation: formData.observacao,
       items: quoteItems.map((item) => ({
         productId: item.id,
         quantity: item.quantity

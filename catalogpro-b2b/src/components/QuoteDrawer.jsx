@@ -43,11 +43,11 @@ function QuoteDrawer({
                 <div className="quoteItemActions">
                   <div className="quantityControls">
                     <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir ${item.nome}`}>
-                    −
+                      −
                     </button>
                     <span>{item.quantity}</span>
                     <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar ${item.nome}`}>
-                    +
+                      +
                     </button>
                   </div>
                   <button className="removeButton" type="button" onClick={() => onRemove(item.id)}>

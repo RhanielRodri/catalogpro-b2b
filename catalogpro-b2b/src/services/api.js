@@ -21,10 +21,6 @@ export function getProducts() {
   return request("/products");
 }
 
-export function getProductById(id) {
-  return request(`/products/${id}`);
-}
-
 export function getCategories() {
   return request("/categories");
 }

@@ -7,7 +7,7 @@ function formatProduct(product) {
   };
 }
 
-export async function listProducts(request, response) {
+export async function listProducts(_request, response) {
   const products = await prisma.product.findMany({
     include: {
       category: true,

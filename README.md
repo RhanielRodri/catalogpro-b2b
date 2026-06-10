@@ -12,9 +12,9 @@ O CatalogPro B2B simula uma solucao para empresas que vendem produtos por orcame
 
 > Observacao: a API esta hospedada no Render e pode apresentar cold start no primeiro acesso.
 
-## Objetivo do projeto
+## Objetivo
 
-O objetivo do CatalogPro B2B e demonstrar uma aplicacao full stack completa, com front-end, back-end, banco de dados, API REST, deploy, integracao entre servicos e painel administrativo.
+Demonstrar uma aplicacao full stack completa, com front-end, back-end, banco de dados, API REST, deploy, integracao entre servicos e painel administrativo.
 
 O projeto foi desenvolvido como case de portfolio para representar um cenario comercial real: empresas B2B que precisam apresentar produtos de forma profissional e receber solicitacoes de orcamento de maneira organizada.
 
@@ -56,7 +56,7 @@ O projeto foi desenvolvido como case de portfolio para representar um cenario co
 - `ANSWERED` - respondida
 - `CLOSED` - fechada
 
-## Tecnologias utilizadas
+## Tecnologias
 
 ### Front-end
 
@@ -86,13 +86,17 @@ O projeto foi desenvolvido como case de portfolio para representar um cenario co
 
 ```txt
 Usuario
-  ↓
+  |
+  v
 Front-end React/Vite - Vercel
-  ↓
+  |
+  v
 API REST Node/Express - Render
-  ↓
+  |
+  v
 Prisma ORM
-  ↓
+  |
+  v
 PostgreSQL - Render
 ```
 
@@ -100,10 +104,10 @@ PostgreSQL - Render
 
 ```txt
 CatalogPro B2B/
-├── catalogpro-b2b/     # Front-end React/Vite
-├── backend/            # API Node/Express/Prisma
-└── docs/
-    └── screenshots/    # Prints do projeto para documentacao
+|-- catalogpro-b2b/     # Front-end React/Vite
+|-- backend/            # API Node/Express/Prisma
+`-- docs/
+    `-- screenshots/    # Prints do projeto para documentacao
 ```
 
 ## Endpoints principais da API
@@ -123,23 +127,32 @@ PATCH  /api/quotes/:id/status
 
 ```txt
 Cliente acessa o site
-↓
+|
+v
 Visualiza o catalogo
-↓
+|
+v
 Pesquisa ou filtra produtos
-↓
+|
+v
 Abre detalhes do produto
-↓
+|
+v
 Adiciona produtos a cotacao
-↓
+|
+v
 Abre a lista de cotacao
-↓
+|
+v
 Preenche o formulario
-↓
+|
+v
 Envia a solicitacao
-↓
+|
+v
 Empresa acompanha no painel admin
-↓
+|
+v
 Empresa altera o status do atendimento
 ```
 
@@ -207,7 +220,7 @@ git clone https://github.com/RhanielRodri/catalogpro-b2b.git
 cd catalogpro-b2b
 ```
 
-## Rodando o front-end
+## Front-end
 
 ```bash
 cd catalogpro-b2b
@@ -227,7 +240,7 @@ Para usar a API online:
 VITE_API_URL=https://catalogpro-b2b-api.onrender.com/api
 ```
 
-## Rodando o back-end
+## Back-end
 
 ```bash
 cd backend
