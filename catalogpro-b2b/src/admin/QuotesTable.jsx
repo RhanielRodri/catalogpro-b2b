@@ -42,15 +42,15 @@ function QuotesTable({ quotes, selectedQuoteId, onSelectQuote }) {
           <tbody>
             {quotes.map((quote) => (
               <tr className={quote.id === selectedQuoteId ? "is-selected" : ""} key={quote.id}>
-                <td>#{quote.id}</td>
-                <td>{quote.name}</td>
-                <td>{quote.company}</td>
-                <td>{quote.phone}</td>
-                <td>{quote.email}</td>
-                <td><span className={`admin-status admin-status-${quote.status}`}>{quote.status}</span></td>
-                <td>{formatDate(quote.createdAt)}</td>
-                <td>{quote.items?.length || 0}</td>
-                <td>
+                <td data-label="ID">#{quote.id}</td>
+                <td data-label="Nome">{quote.name}</td>
+                <td data-label="Empresa">{quote.company}</td>
+                <td data-label="Telefone">{quote.phone}</td>
+                <td data-label="E-mail">{quote.email}</td>
+                <td data-label="Status"><span className={`admin-status admin-status-${quote.status}`}>{quote.status}</span></td>
+                <td data-label="Data">{formatDate(quote.createdAt)}</td>
+                <td data-label="Itens">{quote.items?.length || 0}</td>
+                <td data-label="Ação">
                   <button className="admin-secondaryButton" type="button" onClick={() => onSelectQuote(quote)}>
                     Ver detalhes
                   </button>

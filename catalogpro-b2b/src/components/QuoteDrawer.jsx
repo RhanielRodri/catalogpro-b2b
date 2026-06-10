@@ -36,22 +36,24 @@ function QuoteDrawer({
           ) : (
             quoteItems.map((item) => (
               <article className="quoteItem" key={item.id}>
-                <div>
+                <div className="quoteItemInfo">
                   <strong>{item.nome}</strong>
                   <span>{item.sku} · {item.unidade}</span>
                 </div>
-                <div className="quantityControls">
-                  <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir ${item.nome}`}>
+                <div className="quoteItemActions">
+                  <div className="quantityControls">
+                    <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir ${item.nome}`}>
                     −
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar ${item.nome}`}>
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar ${item.nome}`}>
                     +
+                    </button>
+                  </div>
+                  <button className="removeButton" type="button" onClick={() => onRemove(item.id)}>
+                    Remover
                   </button>
                 </div>
-                <button className="removeButton" type="button" onClick={() => onRemove(item.id)}>
-                  Remover
-                </button>
               </article>
             ))
           )}

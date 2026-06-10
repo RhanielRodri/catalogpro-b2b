@@ -36,7 +36,9 @@ function AdminPage() {
         return data.find((quote) => quote.id === current.id) || data[0] || null;
       });
     } catch (error) {
-      setErrorMessage(error.message || "Não foi possível carregar as cotações.");
+      setErrorMessage(
+        "Não foi possível conectar à API agora. Aguarde alguns segundos e clique em Recarregar."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +53,7 @@ function AdminPage() {
       const data = await getQuoteById(quote.id);
       setSelectedQuote(data);
     } catch (error) {
-      setErrorMessage(error.message || "Não foi possível carregar os detalhes da cotação.");
+      setErrorMessage("Não foi possível carregar os detalhes agora. Tente recarregar em alguns segundos.");
     } finally {
       setIsLoadingDetails(false);
     }
