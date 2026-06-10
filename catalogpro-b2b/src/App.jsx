@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import AdminPage from "./admin/AdminPage";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import ProductCard from "./components/ProductCard";
@@ -26,7 +27,7 @@ function adaptProduct(apiProduct) {
   };
 }
 
-function App() {
+function PublicCatalogApp() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -258,6 +259,14 @@ function App() {
       />
     </>
   );
+}
+
+function App() {
+  if (window.location.pathname === "/admin") {
+    return <AdminPage />;
+  }
+
+  return <PublicCatalogApp />;
 }
 
 export default App;

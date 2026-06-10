@@ -39,3 +39,18 @@ export function createQuote(payload) {
     body: JSON.stringify(payload)
   });
 }
+
+export function getQuotes() {
+  return request("/quotes");
+}
+
+export function getQuoteById(id) {
+  return request(`/quotes/${id}`);
+}
+
+export function updateQuoteStatus(id, status) {
+  return request(`/quotes/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status })
+  });
+}
