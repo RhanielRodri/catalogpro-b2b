@@ -30,7 +30,8 @@ FRONTEND_URL="https://catalogpro-b2b.vercel.app"
 
 ```bash
 npm install
-npx prisma migrate deploy
+npm run build
+npm run prisma:deploy
 npm run prisma:seed
 npm run dev
 ```
@@ -40,7 +41,7 @@ npm run dev
 Na plataforma de deploy, configure:
 
 ```text
-Build Command: npm install && npx prisma migrate deploy
+Build Command: npm ci && npm run build && npm run prisma:deploy
 Start Command: npm start
 ```
 
@@ -49,8 +50,9 @@ Variáveis obrigatórias:
 ```text
 DATABASE_URL
 FRONTEND_URL
-PORT
 ```
+
+O arquivo `render.yaml` na raiz ja define o Web Service do Render para o backend.
 
 Após o primeiro deploy, rode o seed uma vez no shell/job da plataforma:
 

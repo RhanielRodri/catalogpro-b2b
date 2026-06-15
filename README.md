@@ -258,7 +258,7 @@ PORT=3333
 Rodar migracoes com Prisma:
 
 ```bash
-npm run prisma:migrate
+npm run prisma:deploy
 ```
 
 Rodar seed:
@@ -277,6 +277,13 @@ npm run dev
 
 ```bash
 cd catalogpro-b2b
+npm run build
+```
+
+## Build do back-end
+
+```bash
+cd backend
 npm run build
 ```
 
@@ -301,7 +308,6 @@ Variaveis principais do back-end em producao:
 ```env
 DATABASE_URL=URL do PostgreSQL no Render
 FRONTEND_URL=https://catalogpro-b2b.vercel.app
-PORT=3333
 ```
 
 ## Validacao final
