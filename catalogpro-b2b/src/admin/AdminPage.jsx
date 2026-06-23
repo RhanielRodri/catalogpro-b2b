@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminDashboard from "./AdminDashboard";
+import AdminLogin from "./AdminLogin";
 import QuoteDetails from "./QuoteDetails";
 import QuotesTable from "./QuotesTable";
-import { getQuoteById, getQuotes, updateQuoteStatus } from "../services/api";
+import { checkAuth, getQuoteById, getQuotes, logoutAdmin, updateQuoteStatus } from "../services/api";
 import "./admin.css";
 
 function AdminPage() {
+  const [authStatus, setAuthStatus] = useState("checking");
   const [quotes, setQuotes] = useState([]);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,6 +22,17 @@ function AdminPage() {
     return [...quotes].sort((current, next) => new Date(next.createdAt) - new Date(current.createdAt));
   }, [quotes]);
 
+  useEffect(() => {
+    checkAuth()
+      .then(() => {
+        setAuthStatus("authenticated");
+        loadQuotes();
+      })
+      .catch(() => {
+        setAuthStatus("unauthenticated");
+      });
+  }, []);
+
   async function loadQuotes() {
     setIsLoading(true);
     setErrorMessage("");
@@ -29,10 +42,7 @@ function AdminPage() {
       const data = await getQuotes();
       setQuotes(data);
       setSelectedQuote((current) => {
-        if (!current) {
-          return data[0] || null;
-        }
-
+        if (!current) return data[0] || null;
         return data.find((quote) => quote.id === current.id) || data[0] || null;
       });
     } catch (error) {
@@ -78,23 +88,51 @@ function AdminPage() {
     }
   }
 
-  useEffect(() => {
-    loadQuotes();
-  }, []);
+  async function handleLogout() {
+    try {
+      await logoutAdmin();
+    } finally {
+      setAuthStatus("unauthenticated");
+      setQuotes([]);
+      setSelectedQuote(null);
+    }
+  }
+
+  if (authStatus === "checking") {
+    return (
+      <div className="admin-login-page">
+        <p className="admin-login-checking">Verificando acesso...</p>
+      </div>
+    );
+  }
+
+  if (authStatus === "unauthenticated") {
+    return (
+      <AdminLogin
+        onLogin={() => {
+          setAuthStatus("authenticated");
+          loadQuotes();
+        }}
+      />
+    );
+  }
 
   return (
     <main className="admin-page">
       <header className="admin-header">
         <a className="admin-brand" href="/">
-          <span className="admin-brandMark">S</span>
+          <span className="admin-brandMark">C</span>
           <span>
-            <strong>SupraCorp Admin</strong>
-            <small>CatalogPro B2B</small>
+            <strong>CatalogPro B2B</strong>
+            <small>Painel comercial</small>
           </span>
         </a>
         <div className="admin-headerActions">
           <button className="admin-secondaryButton" type="button" onClick={loadQuotes}>
             Recarregar
+          </button>
+          <button className="admin-ghostButton" type="button" onClick={handleLogout}>
+            Sair
           </button>
           <a className="admin-primaryButton" href="/">
             Ver catálogo

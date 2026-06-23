@@ -6,6 +6,7 @@ const API_BASE_URL =
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...options.headers
@@ -38,6 +39,18 @@ export function createQuote(payload) {
     method: "POST",
     body: JSON.stringify(payload)
   });
+}
+
+export function loginAdmin(password) {
+  return request("/auth/login", { method: "POST", body: JSON.stringify({ password }) });
+}
+
+export function logoutAdmin() {
+  return request("/auth/logout", { method: "POST" });
+}
+
+export function checkAuth() {
+  return request("/auth/check");
 }
 
 export function getQuotes() {

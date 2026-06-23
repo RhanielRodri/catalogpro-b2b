@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "cookie-parser": "^1.4.7",
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest",

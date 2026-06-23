@@ -1,6 +1,8 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
+import authRoutes from "./routes/auth.routes.js";
 import brandsRoutes from "./routes/brands.routes.js";
 import categoriesRoutes from "./routes/categories.routes.js";
 import productsRoutes from "./routes/products.routes.js";
@@ -11,12 +13,15 @@ const app = express();
 const PORT = process.env.PORT || 3333;
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
   "http://127.0.0.1:5173",
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/api/health", async (_request, response) => {
   try {
@@ -36,6 +41,7 @@ app.get("/api/health", async (_request, response) => {
   }
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/brands", brandsRoutes);
