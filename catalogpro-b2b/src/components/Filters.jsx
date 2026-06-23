@@ -9,13 +9,15 @@ function Filters({
   onBrandChange,
   onClear
 }) {
+  const hasActiveFilters = searchTerm || selectedCategory || selectedBrand;
+
   return (
     <section className="filters" aria-label="Filtros do catálogo">
       <label>
         Buscar produto
         <input
           type="search"
-          placeholder="Nome, categoria, marca ou SKU"
+          placeholder="Nome, categoria, marca ou SKU..."
           value={searchTerm}
           onChange={(event) => onSearchChange(event.target.value)}
         />
@@ -27,7 +29,7 @@ function Filters({
           value={selectedCategory}
           onChange={(event) => onCategoryChange(event.target.value)}
         >
-          <option value="">Todas</option>
+          <option value="">Todas as categorias</option>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
           ))}
@@ -40,14 +42,18 @@ function Filters({
           value={selectedBrand}
           onChange={(event) => onBrandChange(event.target.value)}
         >
-          <option value="">Todas</option>
+          <option value="">Todas as marcas</option>
           {brands.map((brand) => (
             <option key={brand} value={brand}>{brand}</option>
           ))}
         </select>
       </label>
 
-      <button className="ghostButton" type="button" onClick={onClear}>
+      <button
+        className={hasActiveFilters ? "primaryButton compact" : "ghostButton compact"}
+        type="button"
+        onClick={onClear}
+      >
         Limpar
       </button>
     </section>

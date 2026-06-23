@@ -195,16 +195,57 @@ function PublicCatalogApp() {
 
         <section className="benefits" id="beneficios">
           <div>
-            <span>Compra recorrente</span>
-            <strong>Pedidos por volume e reposição mensal</strong>
+            <span className="benefitIcon" aria-hidden="true">🔄</span>
+            <div>
+              <strong>Compra recorrente</strong>
+              <p>Pedidos por volume e reposição mensal com histórico organizado.</p>
+            </div>
           </div>
           <div>
-            <span>Fluxo B2B</span>
-            <strong>Cotação sem preço público no catálogo</strong>
+            <span className="benefitIcon" aria-hidden="true">🔒</span>
+            <div>
+              <strong>Fluxo B2B confidencial</strong>
+              <p>Cotação sem preço público exposto no catálogo.</p>
+            </div>
           </div>
           <div>
-            <span>Organização</span>
-            <strong>Produtos por categoria, marca e SKU</strong>
+            <span className="benefitIcon" aria-hidden="true">🗂️</span>
+            <div>
+              <strong>Catálogo organizado</strong>
+              <p>Produtos por categoria, marca e SKU com busca rápida.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="howItWorks" id="como-funciona">
+          <div className="sectionHeader">
+            <div>
+              <span className="eyebrow">Processo comercial</span>
+              <h2>Como funciona o fluxo B2B</h2>
+            </div>
+            <p>Do primeiro acesso ao orçamento em minutos</p>
+          </div>
+          <div className="steps">
+            <article className="step">
+              <div className="stepNumber">01</div>
+              <strong>Cliente encontra o produto</strong>
+              <p>Navega pelo catálogo filtrado por categoria, marca ou SKU.</p>
+            </article>
+            <article className="step">
+              <div className="stepNumber">02</div>
+              <strong>Adiciona à cotação</strong>
+              <p>Seleciona produtos e quantidades sem ver preços públicos.</p>
+            </article>
+            <article className="step">
+              <div className="stepNumber">03</div>
+              <strong>Empresa recebe o pedido</strong>
+              <p>Solicitação registrada no painel admin e enviada via WhatsApp.</p>
+            </article>
+            <article className="step">
+              <div className="stepNumber">04</div>
+              <strong>Comercial responde</strong>
+              <p>Equipe analisa, precifica e devolve o orçamento ao cliente.</p>
+            </article>
           </div>
         </section>
 
@@ -236,7 +277,19 @@ function PublicCatalogApp() {
           />
 
           {isLoadingProducts ? (
-            <div className="loadingState">Carregando catálogo...</div>
+            <div className="productGrid">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div className="skeletonCard" key={i}>
+                  <div className="skeletonImage skeleton" />
+                  <div className="skeletonContent">
+                    <div className="skeletonLine skeleton" style={{ width: "55%" }} />
+                    <div className="skeletonLine skeleton" style={{ width: "90%", height: "18px" }} />
+                    <div className="skeletonLine skeleton" style={{ width: "80%" }} />
+                    <div className="skeletonLine skeleton" style={{ width: "65%" }} />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : filteredProducts.length > 0 ? (
             <div className="productGrid">
               {filteredProducts.map((product) => (

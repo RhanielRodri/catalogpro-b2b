@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 
 const statusOptions = [
-  { value: "NEW", label: "NEW" },
-  { value: "IN_REVIEW", label: "IN_REVIEW" },
-  { value: "ANSWERED", label: "ANSWERED" },
-  { value: "CLOSED", label: "CLOSED" }
+  { value: "NEW", label: "Nova" },
+  { value: "IN_REVIEW", label: "Em análise" },
+  { value: "ANSWERED", label: "Respondida" },
+  { value: "CLOSED", label: "Fechada" }
 ];
+
+const statusLabels = {
+  NEW: "Nova",
+  IN_REVIEW: "Em análise",
+  ANSWERED: "Respondida",
+  CLOSED: "Fechada"
+};
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -31,7 +38,7 @@ function QuoteDetails({
     return (
       <aside className="admin-panel admin-details admin-empty">
         <strong>Selecione uma cotação</strong>
-        <p>Use a tabela para abrir os detalhes e gerenciar o status.</p>
+        <p>Use a tabela para abrir os detalhes e gerenciar o status comercial.</p>
       </aside>
     );
   }
@@ -43,6 +50,9 @@ function QuoteDetails({
           <span className="admin-eyebrow">Detalhe da cotação</span>
           <h2>#{quote.id} · {quote.company}</h2>
         </div>
+        <span className={`admin-status admin-status-${quote.status}`}>
+          {statusLabels[quote.status] ?? quote.status}
+        </span>
       </div>
 
       {successMessage && <p className="admin-success" role="status">{successMessage}</p>}
@@ -66,19 +76,21 @@ function QuoteDetails({
           <dd>{quote.email}</dd>
         </div>
         <div>
-          <dt>Status atual</dt>
-          <dd><span className={`admin-status admin-status-${quote.status}`}>{quote.status}</span></dd>
-        </div>
-        <div>
           <dt>Data de criação</dt>
           <dd>{formatDate(quote.createdAt)}</dd>
         </div>
+        <div>
+          <dt>Total de itens</dt>
+          <dd>{quote.items?.length ?? 0} produto{quote.items?.length !== 1 ? "s" : ""}</dd>
+        </div>
       </dl>
 
-      <div className="admin-notes">
-        <dt>Observação</dt>
-        <dd>{quote.notes || "Sem observações."}</dd>
-      </div>
+      {quote.notes && (
+        <div className="admin-notes">
+          <dt>Observação</dt>
+          <dd>{quote.notes}</dd>
+        </div>
+      )}
 
       <section className="admin-items">
         <h3>Itens da cotação</h3>
@@ -88,7 +100,7 @@ function QuoteDetails({
               <strong>{item.product?.name}</strong>
               <span>SKU: {item.product?.sku} · {item.product?.unit}</span>
             </div>
-            <strong>{item.quantity}x</strong>
+            <strong>{item.quantity}×</strong>
           </article>
         ))}
       </section>
@@ -109,7 +121,7 @@ function QuoteDetails({
           </select>
         </label>
         <button className="admin-primaryButton" type="submit" disabled={isUpdating}>
-          {isUpdating ? "Atualizando..." : "Atualizar status"}
+          {isUpdating ? "Atualizando..." : "Salvar status"}
         </button>
       </form>
     </aside>

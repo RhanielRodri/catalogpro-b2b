@@ -2,7 +2,7 @@ function EmptyState() {
   return (
     <div className="emptyState">
       <strong>Nenhum produto encontrado</strong>
-      <p>Ajuste a busca ou remova algum filtro para visualizar mais itens.</p>
+      <p>Ajuste a busca ou limpe os filtros para visualizar mais itens do catálogo.</p>
     </div>
   );
 }

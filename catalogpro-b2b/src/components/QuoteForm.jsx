@@ -61,41 +61,44 @@ function QuoteForm({
   return (
     <form className="quoteForm" onSubmit={handleSubmit} noValidate>
       <h3>Dados para orçamento</h3>
+
       {quoteSuccessMessage && <p className="formSuccess">{quoteSuccessMessage}</p>}
       {quoteErrorMessage && <p className="formError">{quoteErrorMessage}</p>}
       {errors.items && <p className="formError">{errors.items}</p>}
 
-      <label>
-        Nome
-        <input name="nome" value={formData.nome} onChange={handleChange} />
-        {errors.nome && <span>{errors.nome}</span>}
-      </label>
+      <div className="quoteFormRow">
+        <label>
+          Nome
+          <input name="nome" value={formData.nome} onChange={handleChange} placeholder="Seu nome" />
+          {errors.nome && <span>{errors.nome}</span>}
+        </label>
+        <label>
+          Empresa
+          <input name="empresa" value={formData.empresa} onChange={handleChange} placeholder="Razão social" />
+          {errors.empresa && <span>{errors.empresa}</span>}
+        </label>
+      </div>
 
-      <label>
-        Empresa
-        <input name="empresa" value={formData.empresa} onChange={handleChange} />
-        {errors.empresa && <span>{errors.empresa}</span>}
-      </label>
-
-      <label>
-        Telefone
-        <input name="telefone" value={formData.telefone} onChange={handleChange} />
-        {errors.telefone && <span>{errors.telefone}</span>}
-      </label>
-
-      <label>
-        E-mail
-        <input name="email" type="email" value={formData.email} onChange={handleChange} />
-        {errors.email && <span>{errors.email}</span>}
-      </label>
+      <div className="quoteFormRow">
+        <label>
+          Telefone
+          <input name="telefone" value={formData.telefone} onChange={handleChange} placeholder="(11) 99999-9999" />
+          {errors.telefone && <span>{errors.telefone}</span>}
+        </label>
+        <label>
+          E-mail
+          <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="email@empresa.com.br" />
+          {errors.email && <span>{errors.email}</span>}
+        </label>
+      </div>
 
       <label>
         Observação
-        <textarea name="observacao" rows="4" value={formData.observacao} onChange={handleChange} />
+        <textarea name="observacao" rows="3" value={formData.observacao} onChange={handleChange} placeholder="Prazo, forma de entrega, condições especiais..." />
       </label>
 
       <button className="primaryButton fullWidth" type="submit" disabled={isSubmittingQuote}>
-        {isSubmittingQuote ? "Registrando cotação..." : "Salvar cotação e abrir WhatsApp"}
+        {isSubmittingQuote ? "Registrando cotação..." : "Registrar cotação e abrir WhatsApp"}
       </button>
     </form>
   );

@@ -1,3 +1,10 @@
+const statusLabels = {
+  NEW: "Nova",
+  IN_REVIEW: "Em análise",
+  ANSWERED: "Respondida",
+  CLOSED: "Fechada"
+};
+
 function formatDate(value) {
   return new Intl.DateTimeFormat("pt-BR", {
     dateStyle: "short",
@@ -47,9 +54,13 @@ function QuotesTable({ quotes, selectedQuoteId, onSelectQuote }) {
                 <td data-label="Empresa">{quote.company}</td>
                 <td data-label="Telefone">{quote.phone}</td>
                 <td data-label="E-mail">{quote.email}</td>
-                <td data-label="Status"><span className={`admin-status admin-status-${quote.status}`}>{quote.status}</span></td>
+                <td data-label="Status">
+                  <span className={`admin-status admin-status-${quote.status}`}>
+                    {statusLabels[quote.status] ?? quote.status}
+                  </span>
+                </td>
                 <td data-label="Data">{formatDate(quote.createdAt)}</td>
-                <td data-label="Itens">{quote.items?.length || 0}</td>
+                <td data-label="Itens">{quote.items?.length ?? 0}</td>
                 <td data-label="Ação">
                   <button className="admin-secondaryButton" type="button" onClick={() => onSelectQuote(quote)}>
                     Ver detalhes

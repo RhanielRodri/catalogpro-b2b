@@ -15,21 +15,21 @@ function ProductCard({ product, onViewDetails, onAddToQuote }) {
             <dd>{product.marca}</dd>
           </div>
           <div>
-            <dt>SKU</dt>
-            <dd>{product.sku}</dd>
-          </div>
-          <div>
             <dt>Unidade</dt>
             <dd>{product.unidade}</dd>
+          </div>
+          <div>
+            <dt>SKU</dt>
+            <dd>{product.sku}</dd>
           </div>
         </dl>
       </div>
       <div className="cardActions">
         <button className="secondaryButton compact" type="button" onClick={() => onViewDetails(product)}>
-          Ver detalhes
+          Detalhes
         </button>
         <button className="primaryButton compact" type="button" onClick={() => onAddToQuote(product)}>
-          Adicionar à cotação
+          + Cotação
         </button>
       </div>
     </article>

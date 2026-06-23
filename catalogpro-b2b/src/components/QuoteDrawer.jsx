@@ -16,11 +16,11 @@ function QuoteDrawer({
   return (
     <>
       <div className={`drawerBackdrop ${isOpen ? "isOpen" : ""}`} onClick={onClose} />
-      <aside className={`quoteDrawer ${isOpen ? "isOpen" : ""}`} aria-hidden={!isOpen}>
+      <aside className={`quoteDrawer ${isOpen ? "isOpen" : ""}`} aria-hidden={!isOpen} aria-label="Cotação">
         <div className="drawerHeader">
           <div>
             <span className="eyebrow">Lista de cotação</span>
-            <h2>{totalItems} {totalItems === 1 ? "item" : "itens"}</h2>
+            <h2>{totalItems} {totalItems === 1 ? "item" : "itens"} selecionados</h2>
           </div>
           <button className="iconButton" type="button" onClick={onClose} aria-label="Fechar cotação">
             ×
@@ -30,23 +30,23 @@ function QuoteDrawer({
         <div className="quoteItems">
           {quoteItems.length === 0 ? (
             <div className="quoteEmpty">
-              <strong>Sua cotação está vazia</strong>
-              <p>Adicione produtos do catálogo para montar a solicitação.</p>
+              <strong>Cotação vazia</strong>
+              <p>Adicione produtos do catálogo para montar a solicitação de orçamento.</p>
             </div>
           ) : (
             quoteItems.map((item) => (
               <article className="quoteItem" key={item.id}>
                 <div className="quoteItemInfo">
                   <strong>{item.nome}</strong>
-                  <span>{item.sku} · {item.unidade}</span>
+                  <span>{item.categoria} · {item.unidade}</span>
                 </div>
                 <div className="quoteItemActions">
                   <div className="quantityControls">
-                    <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir ${item.nome}`}>
+                    <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir quantidade de ${item.nome}`}>
                       −
                     </button>
                     <span>{item.quantity}</span>
-                    <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar ${item.nome}`}>
+                    <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar quantidade de ${item.nome}`}>
                       +
                     </button>
                   </div>
