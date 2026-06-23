@@ -1,226 +1,153 @@
 # CatalogPro B2B
 
-Sistema full stack de catalogo corporativo B2B com solicitacao de orcamento e painel administrativo.
+Sistema full stack de catálogo corporativo para empresas que vendem por cotação.
 
-O CatalogPro B2B simula uma solucao para empresas que vendem produtos por orcamento. O cliente acessa o catalogo, pesquisa produtos, filtra por categoria ou marca, adiciona itens a uma cotacao e envia uma solicitacao comercial. A empresa acompanha as solicitacoes em um painel administrativo, visualiza os detalhes e atualiza o status do atendimento.
+O cliente acessa o catálogo, pesquisa produtos por categoria, marca ou SKU, adiciona itens à cotação e envia a solicitação. A equipe comercial acompanha os pedidos em um painel administrativo protegido, visualiza os detalhes e atualiza o status de atendimento.
 
-## Demonstracao
+---
 
-- Site em producao: https://catalogpro-b2b.vercel.app/
-- Painel admin: https://catalogpro-b2b.vercel.app/admin
-- API: https://catalogpro-b2b-api.onrender.com/api/health
+## Demonstração
 
-> Observacao: a API esta hospedada no Render e pode apresentar cold start no primeiro acesso.
+| | URL |
+|---|---|
+| **Site** | https://catalogpro-b2b.vercel.app/ |
+| **Painel admin** | https://catalogpro-b2b.vercel.app/admin |
+| **API** | https://catalogpro-b2b-api.onrender.com/api/health |
+| **Senha demo** | `catalogpro-demo` |
 
-## Objetivo
+> A API está no Render (plano gratuito). O primeiro acesso pode levar até 30 segundos para o servidor inicializar.
 
-Demonstrar uma aplicacao full stack completa, com front-end, back-end, banco de dados, API REST, deploy, integracao entre servicos e painel administrativo.
-
-O projeto foi desenvolvido como case de portfolio para representar um cenario comercial real: empresas B2B que precisam apresentar produtos de forma profissional e receber solicitacoes de orcamento de maneira organizada.
+---
 
 ## Funcionalidades
 
-### Area publica
+### Área pública
 
-- Home institucional
-- Catalogo de produtos
-- Busca por nome, categoria, marca e SKU
-- Filtros por categoria e marca
-- Modal com detalhes do produto
-- Lista de cotacao
-- Controle de quantidade dos itens
-- Remocao de produtos da cotacao
-- Formulario de orcamento
-- Envio de solicitacao
-- Envio para WhatsApp
-- Feedback visual ao adicionar produto
-- Estados de loading, erro, vazio e sucesso
-- Layout responsivo para desktop e mobile
-- Fallback caso a API esteja temporariamente indisponivel
+- Catálogo com produtos reais vindos da API
+- Busca por nome, SKU, categoria e marca
+- Filtros combinados por categoria e marca
+- Modal de detalhes com especificações técnicas
+- Drawer de cotação com controle de itens e quantidades
+- Formulário de orçamento com validação
+- Cache inteligente (sessionStorage, TTL 5 min) com stale-while-revalidate
+- Skeleton cards durante o carregamento
+- Estado de erro com retry automático
+- Feedback visual ao adicionar produto à cotação
+- Layout responsivo (desktop, tablet, mobile)
 
 ### Painel administrativo
 
-- Dashboard de cotacoes
-- Metricas por status
-- Listagem de solicitacoes
-- Visualizacao de detalhes da cotacao
-- Dados do cliente
-- Produtos solicitados
-- Alteracao de status da cotacao
-- Layout adaptado para desktop e mobile
+- Tela de login protegida por cookie httpOnly
+- Dashboard com métricas de cotações por status
+- Listagem de solicitações recebidas
+- Visualização completa de cada cotação (dados do cliente + produtos)
+- Atualização de status (Nova → Em análise → Respondida → Fechada)
+- Logout seguro com invalidação de sessão
 
-### Status das cotacoes
-
-- `NEW` - nova cotacao
-- `IN_REVIEW` - em analise
-- `ANSWERED` - respondida
-- `CLOSED` - fechada
+---
 
 ## Tecnologias
 
-### Front-end
+**Frontend**
+- React 19 + Vite
+- CSS puro com custom properties (zero framework)
+- Deploy: Vercel
 
-- React
-- Vite
-- JavaScript
-- CSS puro
-- Vercel
+**Backend**
+- Node.js + Express
+- Prisma ORM + PostgreSQL
+- Deploy: Render
 
-### Back-end
+---
 
-- Node.js
-- Express
-- Prisma ORM
-- PostgreSQL
-- Render
+## Segurança
 
-### Ferramentas
+- Rotas admin protegidas por middleware de sessão
+- Cookie `httpOnly` + `sameSite: none` + `secure` em produção
+- CORS restrito a origens autorizadas
+- Rate limit de cotações (5 por minuto por IP)
+- Validação de payload no backend (tamanho, formato, campos obrigatórios)
+- Nenhum segredo em arquivo versionado
 
-- Git
-- GitHub
-- npm
-- Variaveis de ambiente
-- API REST
+---
 
 ## Arquitetura
 
-```txt
-Usuario
-  |
-  v
-Front-end React/Vite - Vercel
-  |
-  v
-API REST Node/Express - Render
-  |
-  v
-Prisma ORM
-  |
-  v
-PostgreSQL - Render
 ```
+Usuário
+  │
+  ▼
+Frontend React/Vite — Vercel
+  │  sessionStorage cache (5 min TTL)
+  │  stale-while-revalidate
+  ▼
+API REST Node/Express — Render
+  │  rate limit · validação · auth middleware
+  ▼
+Prisma ORM
+  │
+  ▼
+PostgreSQL — Render
+```
+
+---
 
 ## Estrutura do projeto
 
-```txt
+```
 CatalogPro B2B/
-|-- catalogpro-b2b/     # Front-end React/Vite
-|-- backend/            # API Node/Express/Prisma
-`-- docs/
-    `-- screenshots/    # Prints do projeto para documentacao
+├── catalogpro-b2b/       Frontend React/Vite
+│   ├── src/
+│   │   ├── admin/        Painel administrativo
+│   │   ├── components/   Componentes públicos
+│   │   ├── data/         Fallback local
+│   │   └── services/     Integração com API
+│   └── dist/             Build de produção
+├── backend/              API Node/Express/Prisma
+│   └── src/
+│       ├── controllers/
+│       ├── middleware/
+│       └── routes/
+└── docs/
+    └── screenshots/
 ```
 
-## Endpoints principais da API
+---
 
-```txt
+## Endpoints da API
+
+```
 GET    /api/health
 GET    /api/products
 GET    /api/categories
 GET    /api/brands
-GET    /api/quotes
-GET    /api/quotes/:id
+GET    /api/quotes              [auth]
+GET    /api/quotes/:id          [auth]
 POST   /api/quotes
-PATCH  /api/quotes/:id/status
+PATCH  /api/quotes/:id/status   [auth]
+POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/auth/check
 ```
 
-## Fluxo principal
+---
 
-```txt
-Cliente acessa o site
-|
-v
-Visualiza o catalogo
-|
-v
-Pesquisa ou filtra produtos
-|
-v
-Abre detalhes do produto
-|
-v
-Adiciona produtos a cotacao
-|
-v
-Abre a lista de cotacao
-|
-v
-Preenche o formulario
-|
-v
-Envia a solicitacao
-|
-v
-Empresa acompanha no painel admin
-|
-v
-Empresa altera o status do atendimento
-```
+## Como executar localmente
 
-## Screenshots
+### Pré-requisitos
 
-### Home desktop
-
-![Home desktop](docs/screenshots/public-home-desktop.png)
-
-### Catalogo desktop
-
-![Catalogo desktop](docs/screenshots/public-catalog-desktop.png)
-
-### Filtros do catalogo
-
-![Filtros do catalogo](docs/screenshots/public-catalog-filters-desktop.png)
-
-### Modal de produto
-
-![Modal de produto](docs/screenshots/public-product-modal-desktop.png)
-
-### Drawer de cotacao
-
-![Drawer de cotacao](docs/screenshots/public-quote-drawer-desktop.png)
-
-### Formulario de orcamento
-
-![Formulario de orcamento](docs/screenshots/public-quote-form-desktop.png)
-
-### Admin dashboard
-
-![Admin dashboard](docs/screenshots/admin-dashboard-desktop.png)
-
-### Detalhe da cotacao
-
-![Detalhe da cotacao](docs/screenshots/admin-quote-detail-desktop.png)
-
-### Atualizacao de status
-
-![Atualizacao de status](docs/screenshots/admin-status-update-desktop.png)
-
-### Mobile
-
-![Home mobile](docs/screenshots/public-home-mobile.png)
-
-![Catalogo mobile](docs/screenshots/public-catalog-mobile.png)
-
-![Drawer mobile](docs/screenshots/public-quote-drawer-mobile.png)
-
-![Admin mobile](docs/screenshots/admin-dashboard-mobile.png)
-
-## Como rodar localmente
-
-### Pre-requisitos
-
-- Node.js
-- npm
+- Node.js 18+
 - PostgreSQL
 - Git
 
-### Clonar o repositorio
+### Clonar
 
 ```bash
 git clone https://github.com/RhanielRodri/catalogpro-b2b.git
-cd catalogpro-b2b
+cd "CatalogPro B2B"
 ```
 
-## Front-end
+### Frontend
 
 ```bash
 cd catalogpro-b2b
@@ -228,152 +155,113 @@ npm install
 npm run dev
 ```
 
-Arquivo `.env` do front-end:
+`.env` do frontend:
 
 ```env
 VITE_API_URL=http://localhost:3333/api
 ```
 
-Para usar a API online:
-
-```env
-VITE_API_URL=https://catalogpro-b2b-api.onrender.com/api
-```
-
-## Back-end
+### Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Arquivo `.env` do back-end:
+`.env` do backend:
 
 ```env
-DATABASE_URL="sua_url_do_postgresql"
+DATABASE_URL="postgresql://usuario:senha@localhost:5432/catalogpro"
 FRONTEND_URL="http://localhost:5173"
+ADMIN_SECRET="sua_senha_admin"
 PORT=3333
+NODE_ENV=development
 ```
-
-Rodar migracoes com Prisma:
 
 ```bash
-npm run prisma:deploy
+npm run prisma:deploy   # roda as migrations
+npm run prisma:seed     # popula dados de demonstração
+npm run dev             # inicia a API
 ```
 
-Rodar seed:
+### Build
 
 ```bash
-npm run prisma:seed
+# Frontend
+cd catalogpro-b2b && npm run build
+
+# Backend
+cd backend && npm run build
 ```
 
-Iniciar a API:
+---
 
-```bash
-npm run dev
+## Deploy em produção
+
+| Serviço | Plataforma |
+|---|---|
+| Frontend | Vercel |
+| API | Render |
+| Banco | PostgreSQL no Render |
+
+Variáveis necessárias no Vercel:
 ```
-
-## Build do front-end
-
-```bash
-cd catalogpro-b2b
-npm run build
-```
-
-## Build do back-end
-
-```bash
-cd backend
-npm run build
-```
-
-## Deploy
-
-O projeto foi publicado com front-end, back-end e banco separados:
-
-```txt
-Front-end: Vercel
-Back-end/API: Render
-Banco de dados: PostgreSQL no Render
-```
-
-Variavel de ambiente usada no front-end em producao:
-
-```env
 VITE_API_URL=https://catalogpro-b2b-api.onrender.com/api
 ```
 
-Variaveis principais do back-end em producao:
-
-```env
-DATABASE_URL=URL do PostgreSQL no Render
-FRONTEND_URL=https://catalogpro-b2b.vercel.app
+Variáveis necessárias no Render:
+```
+DATABASE_URL
+FRONTEND_URL
+ADMIN_SECRET
+NODE_ENV=production
+PORT=3333
 ```
 
-## Validacao final
+---
 
-QA final realizado com sucesso:
+## Screenshots
 
-- Build do front-end aprovado
-- API online respondendo HTTP 200
-- Produtos carregando em producao
-- Modal de produto funcionando
-- Cotacao funcionando
-- Drawer abrindo manualmente
-- Formulario de orcamento exibido corretamente
-- Admin carregando cotacoes
-- Detalhe da cotacao funcionando
-- Atualizacao de status funcionando via PATCH
-- Layout validado em desktop e mobile
+### Home — desktop
+![Home desktop](docs/screenshots/home-desktop.png)
 
-## Commits importantes
+### Home — mobile
+![Home mobile](docs/screenshots/home-mobile.png)
 
-```txt
-7a4fce3 feat: inicia frontend publico do catalogpro b2b
-ac8f8f3 fix: revisa e estabiliza frontend do catalogpro b2b
-4746a5b feat: adiciona backend inicial do catalogpro b2b
-ffb8aff fix: estabiliza backend do catalogpro b2b
-85a7284 feat: integra frontend com api do catalogpro b2b
-06bff31 feat: adiciona painel admin de cotacoes
-67dcbb0 chore: prepara backend para deploy com postgresql
-58acc5e ux: ajusta abertura manual da cotacao
-93aada3 style: lapida experiencia premium do catalogpro b2b
-38f015f chore: finaliza qa visual e prints do catalogpro b2b
-```
+### Catálogo — desktop
+![Catálogo desktop](docs/screenshots/catalogo-desktop.png)
+
+### Catálogo — mobile
+![Catálogo mobile](docs/screenshots/catalogo-mobile.png)
+
+### Modal de produto
+![Modal de produto](docs/screenshots/produto-modal.png)
+
+### Drawer de cotação
+![Drawer de cotação](docs/screenshots/drawer-cotacao.png)
+
+### Admin — login
+![Admin login](docs/screenshots/admin-login.png)
+
+### Admin — dashboard
+![Admin dashboard](docs/screenshots/admin-dashboard.png)
+
+### Admin — mobile
+![Admin mobile](docs/screenshots/admin-mobile.png)
+
+---
 
 ## O que este projeto demonstra
 
-Este projeto demonstra dominio pratico de:
+- Aplicação full stack com frontend, backend e banco separados e em produção
+- Cache inteligente no cliente para performance em APIs com cold start
+- Autenticação cross-origin com cookie httpOnly seguro
+- Painel administrativo com controle de acesso real
+- Validação e rate limiting no backend
+- Responsividade em múltiplos breakpoints
+- Fluxo B2B real: catálogo → cotação → análise comercial
 
-- Construcao de interfaces com React
-- Componentizacao
-- Consumo de API REST
-- Manipulacao de estado no front-end
-- Formularios
-- Filtros e busca
-- Criacao de API com Node.js e Express
-- Modelagem de dados com Prisma
-- Banco relacional PostgreSQL
-- Deploy separado de front-end e back-end
-- Integracao entre Vercel, Render e PostgreSQL
-- Variaveis de ambiente
-- Responsividade
-- UX para aplicacoes comerciais
-- Painel administrativo
-- Fluxo real de solicitacao de orcamento
-
-## Possiveis melhorias futuras
-
-- Autenticacao para o painel administrativo
-- CRUD de produtos
-- CRUD de categorias e marcas
-- Upload de imagens
-- Envio de e-mail automatico
-- Historico de alteracoes de status
-- Dashboard com graficos
-- Paginacao no catalogo e no admin
-- Testes automatizados
-- Area de login para clientes
+---
 
 ## Autor
 
