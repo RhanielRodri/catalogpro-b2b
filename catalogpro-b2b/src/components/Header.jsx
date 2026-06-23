@@ -12,7 +12,6 @@ function Header({ quoteCount, onOpenQuote }) {
       <nav className="nav" aria-label="Navegação principal">
         <a href="#catalogo">Catálogo</a>
         <a href="#beneficios">Benefícios</a>
-        <a href="#como-funciona">Como funciona</a>
         <button className="quoteButton" type="button" onClick={onOpenQuote} aria-label={`Abrir cotação com ${quoteCount} itens`}>
           Cotação
           <span aria-hidden="true">{quoteCount}</span>

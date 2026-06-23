@@ -4,10 +4,9 @@ function ProductCard({ product, onViewDetails, onAddToQuote }) {
   return (
     <article className="productCard">
       <div className="productImage" aria-hidden="true">
-        <svg className="productImageIcon" width="28" height="36" viewBox="0 0 28 36" fill="none">
-          <rect x="1" y="1" width="26" height="34" rx="3" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="1.5"/>
-          <rect x="1" y="1" width="26" height="8" rx="3" fill="#e8edf3" stroke="#e2e8f0" strokeWidth="1.5"/>
-          <path d="M6 16h16M6 21h11M6 26h13" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round"/>
+        <svg className="productImageIcon" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/>
         </svg>
       </div>
       <div className="productContent">
@@ -22,7 +21,7 @@ function ProductCard({ product, onViewDetails, onAddToQuote }) {
         <dl className="productFacts">
           <div>
             <dt>Marca</dt>
-            <dd>{product.marca}</dd>
+            <dd className="marcaValue">{product.marca}</dd>
           </div>
           <div>
             <dt>Unidade</dt>

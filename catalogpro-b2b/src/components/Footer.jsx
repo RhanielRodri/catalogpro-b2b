@@ -12,7 +12,7 @@ function Footer() {
       <nav className="footerLinks" aria-label="Links do rodapé">
         <a href="#catalogo">Catálogo</a>
         <a href="#beneficios">Benefícios</a>
-        <a href="#como-funciona">Como funciona</a>
+        <a href="#como-funciona">Busca</a>
       </nav>
 
       <p className="footerCopy">© 2025 SupraCorp · Portfólio CatalogPro B2B</p>

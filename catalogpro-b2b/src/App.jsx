@@ -249,8 +249,8 @@ function PublicCatalogApp() {
 
         <section className="howItWorks" id="como-funciona">
           <div className="howItWorksHeader">
-            <p className="howItWorksTitle">Como funciona</p>
-            <p className="howItWorksSubtitle">Do catálogo ao retorno do vendedor.</p>
+            <p className="howItWorksTitle">Encontre o produto certo</p>
+            <p className="howItWorksSubtitle">Pesquise por categoria, marca, SKU ou especificação para montar sua cotação.</p>
           </div>
           <ol className="steps">
             <li className="step">
@@ -260,37 +260,39 @@ function PublicCatalogApp() {
                   <path d="M16.5 16.5l4 4"/>
                 </svg>
               </span>
-              <strong>Encontrar o produto</strong>
-              <p>Busque por categoria, marca, SKU ou especificação.</p>
+              <strong>Pesquise por categoria</strong>
+              <p>Encontre produtos rapidamente usando filtros e busca.</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2"/>
-                  <path d="M9 7h6M9 11h6M9 15h4"/>
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/>
                 </svg>
               </span>
-              <strong>Solicitar cotação</strong>
-              <p>Monte uma lista de produtos e informe quantidades.</p>
+              <strong>Consulte especificações</strong>
+              <p>Visualize detalhes, marca, SKU e informações técnicas.</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="5" width="18" height="14" rx="2"/>
-                  <path d="M3 9l9 6 9-6"/>
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                  <rect x="8" y="2" width="8" height="4" rx="1"/>
+                  <path d="M9 12h6M9 16h4"/>
                 </svg>
               </span>
-              <strong>Empresa recebe o pedido</strong>
-              <p>A solicitação chega organizada para a equipe comercial.</p>
+              <strong>Monte sua cotação</strong>
+              <p>Adicione produtos e quantidades ao pedido.</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
               </span>
-              <strong>Comercial responde</strong>
-              <p>O vendedor analisa a demanda e retorna com a proposta.</p>
+              <strong>Envie para o comercial</strong>
+              <p>A solicitação chega organizada para análise da equipe.</p>
             </li>
           </ol>
         </section>
