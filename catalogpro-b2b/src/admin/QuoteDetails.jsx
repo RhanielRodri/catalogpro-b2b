@@ -47,8 +47,8 @@ function QuoteDetails({
     <aside className="admin-panel admin-details">
       <div className="admin-panelHeader">
         <div>
-          <span className="admin-eyebrow">Detalhe da cotação</span>
-          <h2>#{quote.id} · {quote.company}</h2>
+          <span className="admin-eyebrow">#{quote.id} · {formatDate(quote.createdAt)}</span>
+          <h2>{quote.company}</h2>
         </div>
         <span className={`admin-status admin-status-${quote.status}`}>
           {statusLabels[quote.status] ?? quote.status}
@@ -60,28 +60,16 @@ function QuoteDetails({
 
       <dl className="admin-definitionGrid">
         <div>
-          <dt>Nome</dt>
+          <dt>Nome do contato</dt>
           <dd>{quote.name}</dd>
-        </div>
-        <div>
-          <dt>Empresa</dt>
-          <dd>{quote.company}</dd>
         </div>
         <div>
           <dt>Telefone</dt>
           <dd>{quote.phone}</dd>
         </div>
-        <div>
+        <div className="admin-definitionFull">
           <dt>E-mail</dt>
           <dd>{quote.email}</dd>
-        </div>
-        <div>
-          <dt>Data de criação</dt>
-          <dd>{formatDate(quote.createdAt)}</dd>
-        </div>
-        <div>
-          <dt>Total de itens</dt>
-          <dd>{quote.items?.length ?? 0} produto{quote.items?.length !== 1 ? "s" : ""}</dd>
         </div>
       </dl>
 
@@ -93,14 +81,14 @@ function QuoteDetails({
       )}
 
       <section className="admin-items">
-        <h3>Itens da cotação</h3>
+        <h3>{quote.items?.length ?? 0} {quote.items?.length === 1 ? "produto" : "produtos"} solicitados</h3>
         {quote.items?.map((item) => (
           <article className="admin-item" key={item.id}>
             <div>
               <strong>{item.product?.name}</strong>
-              <span>SKU: {item.product?.sku} · {item.product?.unit}</span>
+              <span className="admin-itemMeta">{item.product?.category?.name} · <span className="skuValue">{item.product?.sku}</span> · {item.product?.unit}</span>
             </div>
-            <strong>{item.quantity}×</strong>
+            <strong className="admin-itemQty">{item.quantity}×</strong>
           </article>
         ))}
       </section>

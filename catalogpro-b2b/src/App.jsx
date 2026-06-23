@@ -218,33 +218,25 @@ function PublicCatalogApp() {
         </section>
 
         <section className="howItWorks" id="como-funciona">
-          <div className="sectionHeader">
-            <div>
-              <span className="eyebrow">Processo comercial</span>
-              <h2>Como funciona o fluxo B2B</h2>
-            </div>
-            <p>Do primeiro acesso ao orçamento em minutos</p>
-          </div>
           <div className="steps">
             <article className="step">
-              <div className="stepNumber">01</div>
-              <strong>Cliente encontra o produto</strong>
-              <p>Navega pelo catálogo filtrado por categoria, marca ou SKU.</p>
+              <span className="stepNumber">01</span>
+              <strong>Encontra o produto</strong>
             </article>
+            <span className="stepArrow" aria-hidden="true">→</span>
             <article className="step">
-              <div className="stepNumber">02</div>
+              <span className="stepNumber">02</span>
               <strong>Adiciona à cotação</strong>
-              <p>Seleciona produtos e quantidades sem ver preços públicos.</p>
             </article>
+            <span className="stepArrow" aria-hidden="true">→</span>
             <article className="step">
-              <div className="stepNumber">03</div>
+              <span className="stepNumber">03</span>
               <strong>Empresa recebe o pedido</strong>
-              <p>Solicitação registrada no painel admin e enviada via WhatsApp.</p>
             </article>
+            <span className="stepArrow" aria-hidden="true">→</span>
             <article className="step">
-              <div className="stepNumber">04</div>
+              <span className="stepNumber">04</span>
               <strong>Comercial responde</strong>
-              <p>Equipe analisa, precifica e devolve o orçamento ao cliente.</p>
             </article>
           </div>
         </section>

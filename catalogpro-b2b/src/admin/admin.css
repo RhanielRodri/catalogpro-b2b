@@ -297,7 +297,7 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 860px;
+  min-width: 560px;
 }
 
 .admin-table th,
@@ -402,10 +402,6 @@
   background: #f8fafc;
 }
 
-.admin-details .admin-definitionGrid div:nth-child(4) {
-  grid-column: 1 / -1;
-}
-
 .admin-definitionGrid dt,
 .admin-notes dt {
   color: var(--admin-muted);
@@ -473,6 +469,35 @@
   color: var(--admin-blue);
   font-size: 0.95rem;
   white-space: nowrap;
+}
+
+.admin-rowCompany {
+  color: var(--admin-navy);
+  font-weight: 700;
+}
+
+.admin-count {
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.admin-itemMeta {
+  display: block;
+  margin-top: 2px;
+  color: var(--admin-muted);
+  font-size: 0.76rem;
+}
+
+.admin-itemQty {
+  color: var(--admin-navy);
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-definitionFull {
+  grid-column: 1 / -1;
 }
 
 .admin-statusForm {

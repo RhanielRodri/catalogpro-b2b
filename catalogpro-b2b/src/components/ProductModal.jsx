@@ -33,7 +33,13 @@ function ProductModal({ product, onClose, onAddToQuote }) {
         <button className="iconButton closeButton" type="button" onClick={onClose} aria-label="Fechar modal">
           ×
         </button>
-        <div className="modalImage" aria-hidden="true">{product.imagem}</div>
+        <div className="modalImage" aria-hidden="true">
+          <svg className="productImageIcon" width="44" height="56" viewBox="0 0 44 56" fill="none">
+            <rect x="2" y="2" width="40" height="52" rx="5" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="2"/>
+            <rect x="2" y="2" width="40" height="13" rx="5" fill="#e8edf3" stroke="#e2e8f0" strokeWidth="2"/>
+            <path d="M10 24h24M10 32h17M10 40h20" stroke="#cbd5e1" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </div>
         <div className="modalContent">
           <span className="tag">{product.categoria}</span>
           <h2 id="product-modal-title">{product.nome}</h2>

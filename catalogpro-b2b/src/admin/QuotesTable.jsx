@@ -29,17 +29,15 @@ function QuotesTable({ quotes, selectedQuoteId, onSelectQuote }) {
           <span className="admin-eyebrow">Solicitações</span>
           <h2>Cotações recebidas</h2>
         </div>
+        <span className="admin-count">{quotes.length} {quotes.length === 1 ? "cotação" : "cotações"}</span>
       </div>
 
       <div className="admin-tableWrap">
         <table className="admin-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nome</th>
               <th>Empresa</th>
-              <th>Telefone</th>
-              <th>E-mail</th>
+              <th>Nome</th>
               <th>Status</th>
               <th>Data</th>
               <th>Itens</th>
@@ -49,11 +47,10 @@ function QuotesTable({ quotes, selectedQuoteId, onSelectQuote }) {
           <tbody>
             {quotes.map((quote) => (
               <tr className={quote.id === selectedQuoteId ? "is-selected" : ""} key={quote.id}>
-                <td data-label="ID">#{quote.id}</td>
+                <td data-label="Empresa">
+                  <strong className="admin-rowCompany">{quote.company}</strong>
+                </td>
                 <td data-label="Nome">{quote.name}</td>
-                <td data-label="Empresa">{quote.company}</td>
-                <td data-label="Telefone">{quote.phone}</td>
-                <td data-label="E-mail">{quote.email}</td>
                 <td data-label="Status">
                   <span className={`admin-status admin-status-${quote.status}`}>
                     {statusLabels[quote.status] ?? quote.status}
@@ -63,7 +60,7 @@ function QuotesTable({ quotes, selectedQuoteId, onSelectQuote }) {
                 <td data-label="Itens">{quote.items?.length ?? 0}</td>
                 <td data-label="Ação">
                   <button className="admin-secondaryButton" type="button" onClick={() => onSelectQuote(quote)}>
-                    Ver detalhes
+                    Abrir
                   </button>
                 </td>
               </tr>

@@ -38,7 +38,7 @@ function QuoteDrawer({
               <article className="quoteItem" key={item.id}>
                 <div className="quoteItemInfo">
                   <strong>{item.nome}</strong>
-                  <span>{item.categoria} · {item.unidade}</span>
+                  <span>{item.categoria} · {item.unidade} · <span className="skuValue">{item.sku}</span></span>
                 </div>
                 <div className="quoteItemActions">
                   <div className="quantityControls">
@@ -58,6 +58,13 @@ function QuoteDrawer({
             ))
           )}
         </div>
+
+        {quoteItems.length > 0 && (
+          <div className="quoteSummary">
+            <span>{quoteItems.length} {quoteItems.length === 1 ? "produto" : "produtos"}</span>
+            <strong>{totalItems} {totalItems === 1 ? "unidade" : "unidades"} no total</strong>
+          </div>
+        )}
 
         <QuoteForm
           quoteItems={quoteItems}
