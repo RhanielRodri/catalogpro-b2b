@@ -9,7 +9,25 @@ import QuoteDrawer from "./components/QuoteDrawer";
 import EmptyState from "./components/EmptyState";
 import Footer from "./components/Footer";
 import { products } from "./data/products";
-import { createQuote, getBrands, getCategories, getProducts } from "./services/api";
+import { createQuote, getProducts } from "./services/api";
+
+const CACHE_KEY = "catalogpro_v1";
+const CACHE_TTL = 5 * 60 * 1000;
+
+function readCache() {
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    return Date.now() - ts < CACHE_TTL ? data : null;
+  } catch { return null; }
+}
+
+function writeCache(data) {
+  try {
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+  } catch {}
+}
 
 function adaptProduct(apiProduct) {
   return {
@@ -56,32 +74,44 @@ function PublicCatalogApp() {
     return () => window.clearTimeout(timer);
   }, [quoteFeedbackMessage]);
 
-  useEffect(() => {
-    async function loadCatalogData() {
+  async function loadCatalog(silent = false) {
+    if (!silent) {
       setIsLoadingProducts(true);
       setProductsError("");
-
-      try {
-        const [apiProducts, apiCategories, apiBrands] = await Promise.all([
-          getProducts(),
-          getCategories(),
-          getBrands()
-        ]);
-
-        setCatalogProducts(apiProducts.map(adaptProduct));
-        setCategories(apiCategories.map((category) => category.name));
-        setBrands(apiBrands.map((brand) => brand.name));
-      } catch (error) {
-        setCatalogProducts(products);
-        setCategories([...new Set(products.map((product) => product.categoria))]);
-        setBrands([...new Set(products.map((product) => product.marca))]);
-        setProductsError("Não foi possível conectar à API. Exibindo dados demonstrativos.");
-      } finally {
-        setIsLoadingProducts(false);
-      }
     }
+    try {
+      const apiProducts = await getProducts();
+      const adapted = apiProducts.map(adaptProduct);
+      const cats = [...new Set(apiProducts.map((p) => p.category?.name).filter(Boolean))].sort();
+      const brs = [...new Set(apiProducts.map((p) => p.brand?.name).filter(Boolean))].sort();
+      setCatalogProducts(adapted);
+      setCategories(cats);
+      setBrands(brs);
+      writeCache({ products: adapted, categories: cats, brands: brs });
+      if (!silent) setProductsError("");
+    } catch {
+      if (!silent) {
+        setCatalogProducts(products);
+        setCategories([...new Set(products.map((p) => p.categoria))]);
+        setBrands([...new Set(products.map((p) => p.marca))]);
+        setProductsError("Não foi possível carregar os produtos.");
+      }
+    } finally {
+      if (!silent) setIsLoadingProducts(false);
+    }
+  }
 
-    loadCatalogData();
+  useEffect(() => {
+    const cached = readCache();
+    if (cached) {
+      setCatalogProducts(cached.products);
+      setCategories(cached.categories);
+      setBrands(cached.brands);
+      setIsLoadingProducts(false);
+      loadCatalog(true);
+    } else {
+      loadCatalog(false);
+    }
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -247,12 +277,19 @@ function PublicCatalogApp() {
               <span className="eyebrow">Catálogo público</span>
               <h2>Produtos para operação corporativa</h2>
             </div>
-            <p>{isLoadingProducts ? "Carregando produtos..." : `${filteredProducts.length} produtos encontrados`}</p>
+            <p>{isLoadingProducts ? "Carregando catálogo comercial..." : `${filteredProducts.length} produto${filteredProducts.length !== 1 ? "s" : ""} encontrado${filteredProducts.length !== 1 ? "s" : ""}`}</p>
           </div>
 
           {productsError && (
-            <div className="catalogNotice" role="status">
-              {productsError}
+            <div className="catalogNotice" role="alert">
+              <span>{productsError}</span>
+              <button
+                className="ghostButton compact"
+                type="button"
+                onClick={() => loadCatalog(false)}
+              >
+                Tentar novamente
+              </button>
             </div>
           )}
 
