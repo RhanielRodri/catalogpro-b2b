@@ -248,27 +248,51 @@ function PublicCatalogApp() {
         </section>
 
         <section className="howItWorks" id="como-funciona">
-          <div className="steps">
-            <article className="step">
-              <span className="stepNumber">01</span>
-              <strong>Encontra o produto</strong>
-            </article>
-            <span className="stepArrow" aria-hidden="true">→</span>
-            <article className="step">
-              <span className="stepNumber">02</span>
-              <strong>Adiciona à cotação</strong>
-            </article>
-            <span className="stepArrow" aria-hidden="true">→</span>
-            <article className="step">
-              <span className="stepNumber">03</span>
-              <strong>Empresa recebe o pedido</strong>
-            </article>
-            <span className="stepArrow" aria-hidden="true">→</span>
-            <article className="step">
-              <span className="stepNumber">04</span>
-              <strong>Comercial responde</strong>
-            </article>
+          <div className="howItWorksHeader">
+            <p className="howItWorksTitle">Como funciona</p>
+            <p className="howItWorksSubtitle">Do catálogo ao retorno do vendedor.</p>
           </div>
+          <ol className="steps">
+            <li className="step">
+              <span className="stepIcon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="7"/>
+                  <path d="M16.5 16.5l4 4"/>
+                </svg>
+              </span>
+              <strong>Encontrar o produto</strong>
+              <p>Busque por categoria, marca, SKU ou especificação.</p>
+            </li>
+            <li className="step">
+              <span className="stepIcon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2"/>
+                  <path d="M9 7h6M9 11h6M9 15h4"/>
+                </svg>
+              </span>
+              <strong>Solicitar cotação</strong>
+              <p>Monte uma lista de produtos e informe quantidades.</p>
+            </li>
+            <li className="step">
+              <span className="stepIcon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2"/>
+                  <path d="M3 9l9 6 9-6"/>
+                </svg>
+              </span>
+              <strong>Empresa recebe o pedido</strong>
+              <p>A solicitação chega organizada para a equipe comercial.</p>
+            </li>
+            <li className="step">
+              <span className="stepIcon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </span>
+              <strong>Comercial responde</strong>
+              <p>O vendedor analisa a demanda e retorna com a proposta.</p>
+            </li>
+          </ol>
         </section>
 
         <section className="catalog" id="catalogo">
