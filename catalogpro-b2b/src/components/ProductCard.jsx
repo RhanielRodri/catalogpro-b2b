@@ -1,4 +1,7 @@
+import { useTranslation } from "../i18n/I18nContext";
+
 function ProductCard({ product, onViewDetails, onAddToQuote }) {
+  const { t } = useTranslation();
   const isUnderConsultation = product.disponibilidade === "Sob consulta";
 
   return (
@@ -13,32 +16,32 @@ function ProductCard({ product, onViewDetails, onAddToQuote }) {
         <div className="cardMeta">
           <span>{product.categoria}</span>
           <span className={isUnderConsultation ? "metaConsulta" : "metaDisp"}>
-            {isUnderConsultation ? "Sob consulta" : "Disponível"}
+            {isUnderConsultation ? t.product_consultation : t.product_available}
           </span>
         </div>
         <h3>{product.nome}</h3>
         <p>{product.descricaoCurta}</p>
         <dl className="productFacts">
           <div>
-            <dt>Marca</dt>
+            <dt>{t.product_brand}</dt>
             <dd className="marcaValue">{product.marca}</dd>
           </div>
           <div>
-            <dt>Unidade</dt>
+            <dt>{t.product_unit}</dt>
             <dd>{product.unidade}</dd>
           </div>
           <div>
-            <dt>SKU</dt>
+            <dt>{t.product_sku}</dt>
             <dd className="skuValue">{product.sku}</dd>
           </div>
         </dl>
       </div>
       <div className="cardActions">
         <button className="secondaryButton compact" type="button" onClick={() => onViewDetails(product)}>
-          Detalhes
+          {t.product_details}
         </button>
         <button className="primaryButton compact" type="button" onClick={() => onAddToQuote(product)}>
-          + Cotação
+          {t.product_add_quote}
         </button>
       </div>
     </article>

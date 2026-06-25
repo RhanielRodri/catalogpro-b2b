@@ -10,6 +10,7 @@ import EmptyState from "./components/EmptyState";
 import Footer from "./components/Footer";
 import { products } from "./data/products";
 import { createQuote, getProducts } from "./services/api";
+import { useTranslation } from "./i18n/I18nContext";
 
 const CACHE_KEY = "catalogpro_v1";
 const CACHE_TTL = 5 * 60 * 1000;
@@ -46,6 +47,7 @@ function adaptProduct(apiProduct) {
 }
 
 function PublicCatalogApp() {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -94,7 +96,7 @@ function PublicCatalogApp() {
         setCatalogProducts(products);
         setCategories([...new Set(products.map((p) => p.categoria))]);
         setBrands([...new Set(products.map((p) => p.marca))]);
-        setProductsError("Não foi possível carregar os produtos.");
+        setProductsError(t.products_error);
       }
     } finally {
       if (!silent) setIsLoadingProducts(false);
@@ -143,13 +145,13 @@ function PublicCatalogApp() {
       const existingItem = current.find((item) => item.id === product.id);
 
       if (existingItem) {
-        setQuoteFeedbackMessage("Quantidade atualizada na cotação.");
+        setQuoteFeedbackMessage(t.feedback_updated);
         return current.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
 
-      setQuoteFeedbackMessage("Produto adicionado à cotação.");
+      setQuoteFeedbackMessage(t.feedback_added);
       return [...current, { ...product, quantity: 1 }];
     });
   }
@@ -195,11 +197,11 @@ function PublicCatalogApp() {
 
     try {
       await createQuote(payload);
-      setQuoteSuccessMessage("Solicitação de orçamento registrada com sucesso.");
+      setQuoteSuccessMessage(t.quote_success);
       setQuoteItems([]);
       return true;
     } catch (error) {
-      setQuoteErrorMessage(error.message || "Não foi possível registrar a cotação na API.");
+      setQuoteErrorMessage(error.message || t.products_error);
       return false;
     } finally {
       setIsSubmittingQuote(false);
@@ -227,30 +229,30 @@ function PublicCatalogApp() {
           <div>
             <span className="benefitIcon" aria-hidden="true">🔄</span>
             <div>
-              <strong>Compra recorrente</strong>
-              <p>Pedidos por volume e reposição mensal com histórico organizado.</p>
+              <strong>{t.benefit1_title}</strong>
+              <p>{t.benefit1_desc}</p>
             </div>
           </div>
           <div>
             <span className="benefitIcon" aria-hidden="true">🔒</span>
             <div>
-              <strong>Fluxo B2B confidencial</strong>
-              <p>Cotação sem preço público exposto no catálogo.</p>
+              <strong>{t.benefit2_title}</strong>
+              <p>{t.benefit2_desc}</p>
             </div>
           </div>
           <div>
             <span className="benefitIcon" aria-hidden="true">🗂️</span>
             <div>
-              <strong>Catálogo organizado</strong>
-              <p>Produtos por categoria, marca e SKU com busca rápida.</p>
+              <strong>{t.benefit3_title}</strong>
+              <p>{t.benefit3_desc}</p>
             </div>
           </div>
         </section>
 
         <section className="howItWorks" id="como-funciona">
           <div className="howItWorksHeader">
-            <p className="howItWorksTitle">Encontre o produto certo</p>
-            <p className="howItWorksSubtitle">Pesquise por categoria, marca, SKU ou especificação para montar sua cotação.</p>
+            <p className="howItWorksTitle">{t.how_title}</p>
+            <p className="howItWorksSubtitle">{t.how_subtitle}</p>
           </div>
           <ol className="steps">
             <li className="step">
@@ -260,8 +262,8 @@ function PublicCatalogApp() {
                   <path d="M16.5 16.5l4 4"/>
                 </svg>
               </span>
-              <strong>Pesquise por categoria</strong>
-              <p>Encontre produtos rapidamente usando filtros e busca.</p>
+              <strong>{t.step1_title}</strong>
+              <p>{t.step1_desc}</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
@@ -270,8 +272,8 @@ function PublicCatalogApp() {
                   <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/>
                 </svg>
               </span>
-              <strong>Consulte especificações</strong>
-              <p>Visualize detalhes, marca, SKU e informações técnicas.</p>
+              <strong>{t.step2_title}</strong>
+              <p>{t.step2_desc}</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
@@ -281,8 +283,8 @@ function PublicCatalogApp() {
                   <path d="M9 12h6M9 16h4"/>
                 </svg>
               </span>
-              <strong>Monte sua cotação</strong>
-              <p>Adicione produtos e quantidades ao pedido.</p>
+              <strong>{t.step3_title}</strong>
+              <p>{t.step3_desc}</p>
             </li>
             <li className="step">
               <span className="stepIcon" aria-hidden="true">
@@ -291,8 +293,8 @@ function PublicCatalogApp() {
                   <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
               </span>
-              <strong>Envie para o comercial</strong>
-              <p>A solicitação chega organizada para análise da equipe.</p>
+              <strong>{t.step4_title}</strong>
+              <p>{t.step4_desc}</p>
             </li>
           </ol>
         </section>
@@ -300,10 +302,10 @@ function PublicCatalogApp() {
         <section className="catalog" id="catalogo">
           <div className="sectionHeader">
             <div>
-              <span className="eyebrow">Catálogo público</span>
-              <h2>Produtos para operação corporativa</h2>
+              <span className="eyebrow">{t.catalog_eyebrow}</span>
+              <h2>{t.catalog_title}</h2>
             </div>
-            <p>{isLoadingProducts ? "Carregando catálogo comercial..." : `${filteredProducts.length} produto${filteredProducts.length !== 1 ? "s" : ""} encontrado${filteredProducts.length !== 1 ? "s" : ""}`}</p>
+            <p>{isLoadingProducts ? t.catalog_loading : t.catalog_found(filteredProducts.length)}</p>
           </div>
 
           {productsError && (
@@ -314,7 +316,7 @@ function PublicCatalogApp() {
                 type="button"
                 onClick={() => loadCatalog(false)}
               >
-                Tentar novamente
+                {t.catalog_retry}
               </button>
             </div>
           )}

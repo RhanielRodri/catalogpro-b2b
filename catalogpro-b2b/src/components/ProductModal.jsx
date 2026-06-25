@@ -1,6 +1,9 @@
 import { useEffect } from "react";
+import { useTranslation } from "../i18n/I18nContext";
 
 function ProductModal({ product, onClose, onAddToQuote }) {
+  const { t } = useTranslation();
+
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === "Escape") {
@@ -30,7 +33,7 @@ function ProductModal({ product, onClose, onAddToQuote }) {
         aria-labelledby="product-modal-title"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <button className="iconButton closeButton" type="button" onClick={onClose} aria-label="Fechar modal">
+        <button className="iconButton closeButton" type="button" onClick={onClose} aria-label={t.modal_close_aria}>
           ×
         </button>
         <div className="modalImage" aria-hidden="true">
@@ -46,24 +49,24 @@ function ProductModal({ product, onClose, onAddToQuote }) {
           <p>{product.descricaoCompleta}</p>
           <dl className="modalFacts">
             <div>
-              <dt>Marca</dt>
+              <dt>{t.modal_brand}</dt>
               <dd>{product.marca}</dd>
             </div>
             <div>
-              <dt>SKU</dt>
+              <dt>{t.modal_sku}</dt>
               <dd>{product.sku}</dd>
             </div>
             <div>
-              <dt>Unidade</dt>
+              <dt>{t.modal_unit}</dt>
               <dd>{product.unidade}</dd>
             </div>
             <div>
-              <dt>Disponibilidade</dt>
-              <dd>{product.disponibilidade}</dd>
+              <dt>{t.modal_availability}</dt>
+              <dd>{product.disponibilidade === "Sob consulta" ? t.product_consultation : t.product_available}</dd>
             </div>
           </dl>
           <div className="specBox">
-            <strong>Especificações técnicas</strong>
+            <strong>{t.modal_specs}</strong>
             <ul>
               {product.especificacoes.map((spec) => (
                 <li key={spec}>{spec}</li>
@@ -71,7 +74,7 @@ function ProductModal({ product, onClose, onAddToQuote }) {
             </ul>
           </div>
           <button className="primaryButton" type="button" onClick={handleAddToQuote}>
-            Adicionar à cotação
+            {t.modal_add}
           </button>
         </div>
       </section>

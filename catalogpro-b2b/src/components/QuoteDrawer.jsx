@@ -1,3 +1,4 @@
+import { useTranslation } from "../i18n/I18nContext";
 import QuoteForm from "./QuoteForm";
 
 function QuoteDrawer({
@@ -13,16 +14,18 @@ function QuoteDrawer({
   quoteSuccessMessage,
   quoteErrorMessage
 }) {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className={`drawerBackdrop ${isOpen ? "isOpen" : ""}`} onClick={onClose} />
       <aside className={`quoteDrawer ${isOpen ? "isOpen" : ""}`} aria-hidden={!isOpen} aria-label="Cotação">
         <div className="drawerHeader">
           <div>
-            <span className="eyebrow">Lista de cotação</span>
-            <h2>{totalItems} {totalItems === 1 ? "item" : "itens"} selecionados</h2>
+            <span className="eyebrow">{t.quote_list}</span>
+            <h2>{t.quote_items(totalItems)}</h2>
           </div>
-          <button className="iconButton" type="button" onClick={onClose} aria-label="Fechar cotação">
+          <button className="iconButton" type="button" onClick={onClose} aria-label={t.quote_close_aria}>
             ×
           </button>
         </div>
@@ -30,8 +33,8 @@ function QuoteDrawer({
         <div className="quoteItems">
           {quoteItems.length === 0 ? (
             <div className="quoteEmpty">
-              <strong>Cotação vazia</strong>
-              <p>Adicione produtos do catálogo para montar a solicitação de orçamento.</p>
+              <strong>{t.quote_empty_title}</strong>
+              <p>{t.quote_empty_desc}</p>
             </div>
           ) : (
             quoteItems.map((item) => (
@@ -42,16 +45,16 @@ function QuoteDrawer({
                 </div>
                 <div className="quoteItemActions">
                   <div className="quantityControls">
-                    <button type="button" onClick={() => onDecrease(item.id)} aria-label={`Diminuir quantidade de ${item.nome}`}>
+                    <button type="button" onClick={() => onDecrease(item.id)} aria-label={t.quote_decrease_aria(item.nome)}>
                       −
                     </button>
                     <span>{item.quantity}</span>
-                    <button type="button" onClick={() => onIncrease(item.id)} aria-label={`Aumentar quantidade de ${item.nome}`}>
+                    <button type="button" onClick={() => onIncrease(item.id)} aria-label={t.quote_increase_aria(item.nome)}>
                       +
                     </button>
                   </div>
                   <button className="removeButton" type="button" onClick={() => onRemove(item.id)}>
-                    Remover
+                    {t.quote_remove}
                   </button>
                 </div>
               </article>
@@ -61,8 +64,7 @@ function QuoteDrawer({
 
         {quoteItems.length > 0 && (
           <div className="quoteSummary">
-            <span>{quoteItems.length} {quoteItems.length === 1 ? "produto" : "produtos"}</span>
-            <strong>{totalItems} {totalItems === 1 ? "unidade" : "unidades"} no total</strong>
+            <span>{t.quote_summary(quoteItems.length, totalItems)}</span>
           </div>
         )}
 

@@ -1,3 +1,5 @@
+import { useTranslation } from "../i18n/I18nContext";
+
 function Filters({
   searchTerm,
   selectedCategory,
@@ -9,27 +11,28 @@ function Filters({
   onBrandChange,
   onClear
 }) {
+  const { t } = useTranslation();
   const hasActiveFilters = searchTerm || selectedCategory || selectedBrand;
 
   return (
     <section className="filters" aria-label="Filtros do catálogo">
       <label>
-        Buscar produto
+        {t.filter_search_label}
         <input
           type="search"
-          placeholder="Nome, categoria, marca ou SKU..."
+          placeholder={t.filter_search_placeholder}
           value={searchTerm}
           onChange={(event) => onSearchChange(event.target.value)}
         />
       </label>
 
       <label>
-        Categoria
+        {t.filter_category_label}
         <select
           value={selectedCategory}
           onChange={(event) => onCategoryChange(event.target.value)}
         >
-          <option value="">Todas as categorias</option>
+          <option value="">{t.filter_category_all}</option>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
           ))}
@@ -37,12 +40,12 @@ function Filters({
       </label>
 
       <label>
-        Marca
+        {t.filter_brand_label}
         <select
           value={selectedBrand}
           onChange={(event) => onBrandChange(event.target.value)}
         >
-          <option value="">Todas as marcas</option>
+          <option value="">{t.filter_brand_all}</option>
           {brands.map((brand) => (
             <option key={brand} value={brand}>{brand}</option>
           ))}
@@ -54,7 +57,7 @@ function Filters({
         type="button"
         onClick={onClear}
       >
-        Limpar
+        {t.filter_clear}
       </button>
     </section>
   );

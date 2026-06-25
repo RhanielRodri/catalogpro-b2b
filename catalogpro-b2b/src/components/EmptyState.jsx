@@ -1,8 +1,12 @@
+import { useTranslation } from "../i18n/I18nContext";
+
 function EmptyState() {
+  const { t } = useTranslation();
+
   return (
     <div className="emptyState">
-      <strong>Nenhum produto encontrado</strong>
-      <p>Ajuste a busca ou limpe os filtros para visualizar mais itens do catálogo.</p>
+      <strong>{t.empty_title}</strong>
+      <p>{t.empty_desc}</p>
     </div>
   );
 }

@@ -1,31 +1,32 @@
+import { useTranslation } from "../i18n/I18nContext";
+
 function Hero({ onOpenQuote }) {
+  const { t } = useTranslation();
+
   return (
     <section className="hero" id="topo">
       <div className="heroContent">
-        <span className="eyebrow">Plataforma B2B de catálogo e orçamento</span>
-        <h1>Do catálogo ao pedido em minutos</h1>
-        <p>
-          Consulte produtos por categoria, compare especificações técnicas
-          e solicite orçamentos com seus dados comerciais em um único fluxo.
-        </p>
+        <span className="eyebrow">{t.hero_eyebrow}</span>
+        <h1>{t.hero_title}</h1>
+        <p>{t.hero_desc}</p>
         <div className="heroStats">
-          <span><strong>24+</strong> produtos catalogados</span>
+          <span><strong>24+</strong> {t.hero_stat_products}</span>
           <span className="heroStatDivider" />
-          <span><strong>6</strong> categorias B2B</span>
+          <span><strong>6</strong> {t.hero_stat_categories}</span>
           <span className="heroStatDivider" />
-          <span><strong>0</strong> preços expostos</span>
+          <span><strong>0</strong> {t.hero_stat_prices}</span>
         </div>
         <div className="heroActions">
-          <a className="primaryButton" href="#catalogo">Ver catálogo</a>
+          <a className="primaryButton" href="#catalogo">{t.hero_btn_catalog}</a>
           <button className="secondaryButton" type="button" onClick={onOpenQuote}>
-            Iniciar cotação
+            {t.hero_btn_quote}
           </button>
         </div>
       </div>
 
       <div className="heroPreview" aria-label="Prévia do sistema de catálogo">
         <div className="heroPreviewHeader">
-          <span className="heroPreviewTitle">Catálogo B2B</span>
+          <span className="heroPreviewTitle">{t.hero_preview_title}</span>
           <span className="heroPreviewBadge">24 produtos</span>
         </div>
         <div className="heroPreviewItems">
@@ -56,10 +57,10 @@ function Hero({ onOpenQuote }) {
         </div>
         <div className="heroPreviewFooter">
           <div className="heroPreviewQuote">
-            <span>Cotação em aberto</span>
-            <strong>1 item selecionado</strong>
+            <span>{t.hero_preview_open}</span>
+            <strong>{t.hero_preview_selected}</strong>
           </div>
-          <span className="heroPreviewCta" aria-hidden="true">Enviar pedido →</span>
+          <span className="heroPreviewCta" aria-hidden="true">{t.hero_preview_send}</span>
         </div>
       </div>
     </section>

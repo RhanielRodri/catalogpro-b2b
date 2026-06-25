@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { buildWhatsAppUrl } from "../utils/whatsapp";
+import { useTranslation } from "../i18n/I18nContext";
 
 const initialFormData = {
   nome: "",
@@ -16,6 +17,7 @@ function QuoteForm({
   quoteSuccessMessage,
   quoteErrorMessage
 }) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
 
@@ -29,12 +31,12 @@ function QuoteForm({
 
     ["nome", "empresa", "telefone", "email"].forEach((field) => {
       if (!formData[field].trim()) {
-        nextErrors[field] = "Campo obrigatório";
+        nextErrors[field] = t.form_required;
       }
     });
 
     if (quoteItems.length === 0) {
-      nextErrors.items = "Adicione pelo menos um produto à cotação";
+      nextErrors.items = t.form_items_required;
     }
 
     setErrors(nextErrors);
@@ -60,7 +62,7 @@ function QuoteForm({
 
   return (
     <form className="quoteForm" onSubmit={handleSubmit} noValidate>
-      <h3>Dados para orçamento</h3>
+      <h3>{t.form_title}</h3>
 
       {quoteSuccessMessage && <p className="formSuccess">{quoteSuccessMessage}</p>}
       {quoteErrorMessage && <p className="formError">{quoteErrorMessage}</p>}
@@ -68,37 +70,37 @@ function QuoteForm({
 
       <div className="quoteFormRow">
         <label>
-          Nome
-          <input name="nome" value={formData.nome} onChange={handleChange} placeholder="Seu nome" />
+          {t.form_name}
+          <input name="nome" value={formData.nome} onChange={handleChange} placeholder={t.form_name_placeholder} />
           {errors.nome && <span>{errors.nome}</span>}
         </label>
         <label>
-          Empresa
-          <input name="empresa" value={formData.empresa} onChange={handleChange} placeholder="Razão social" />
+          {t.form_company}
+          <input name="empresa" value={formData.empresa} onChange={handleChange} placeholder={t.form_company_placeholder} />
           {errors.empresa && <span>{errors.empresa}</span>}
         </label>
       </div>
 
       <div className="quoteFormRow">
         <label>
-          Telefone
-          <input name="telefone" value={formData.telefone} onChange={handleChange} placeholder="(11) 99999-9999" />
+          {t.form_phone}
+          <input name="telefone" value={formData.telefone} onChange={handleChange} placeholder={t.form_phone_placeholder} />
           {errors.telefone && <span>{errors.telefone}</span>}
         </label>
         <label>
-          E-mail
-          <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="email@empresa.com.br" />
+          {t.form_email}
+          <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder={t.form_email_placeholder} />
           {errors.email && <span>{errors.email}</span>}
         </label>
       </div>
 
       <label>
-        Observação
-        <textarea name="observacao" rows="3" value={formData.observacao} onChange={handleChange} placeholder="Prazo, forma de entrega, condições especiais..." />
+        {t.form_notes}
+        <textarea name="observacao" rows="3" value={formData.observacao} onChange={handleChange} placeholder={t.form_notes_placeholder} />
       </label>
 
       <button className="primaryButton fullWidth" type="submit" disabled={isSubmittingQuote}>
-        {isSubmittingQuote ? "Registrando cotação..." : "Registrar cotação e abrir WhatsApp"}
+        {isSubmittingQuote ? t.form_submitting : t.form_submit}
       </button>
     </form>
   );
